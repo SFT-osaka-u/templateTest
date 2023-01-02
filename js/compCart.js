@@ -36,5 +36,4 @@ const cartPage = {
 	`,
 }
 
-
 export { cartPage as default };
