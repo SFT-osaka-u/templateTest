@@ -26,17 +26,30 @@ const searchPage = {
 		'cv-cart-btn': cartBtnComponent,
 		'cv-cards-show-case': cardsShowCaseComponent,
 	},
-	template: `
+	template: 
+	`
 		<div>
 			<cv-header v-bind="settings"></cv-header>
 			<v-main>
 				<cv-cards-show-case :books="books" @like="changeLike" @cart="changeCart"></cv-cards-show-case>
-				<router-link to="/cart">
+				
 					<cv-cart-btn :cart="wholeCart"></cv-cart-btn>
-				</router-link>
+				
 			</v-main>
 		</div>
-	`,
+	`
+	// `
+	// 	<div>
+	// 		<cv-header v-bind="settings"></cv-header>
+	// 		<v-main>
+	// 			<cv-cards-show-case :books="books" @like="changeLike" @cart="changeCart"></cv-cards-show-case>
+	// 			<router-link to="/cart">
+	// 				<cv-cart-btn :cart="wholeCart"></cv-cart-btn>
+	// 			</router-link>
+	// 		</v-main>
+	// 	</div>
+	// `
+	,
 }
 
 

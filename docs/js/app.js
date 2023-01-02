@@ -8,20 +8,20 @@ const { createVuetify } = Vuetify;
 const vuetify = createVuetify();
 
 
-const Home = { template: '<div>Home</div>' }
-const About = { template: '<div>About</div>' }
+// const Home = { template: '<div>Home</div>' }
+// const About = { template: '<div>About</div>' }
 
-const routes = [
-	{ path: '/', component: searchPage },
-	{ path: '/about', component: About },
-	{ path: '/search', component: searchPage },
-	{ path: '/cart', component: cartPage }
-]
+// const routes = [
+// 	{ path: '/', component: Home },
+// 	{ path: '/about', component: About },
+// 	{ path: '/search', component: searchPage },
+// 	{ path: '/cart', component: cartPage }
+// ]
 
-const router = VueRouter.createRouter({
-	history: VueRouter.createWebHashHistory(),
-	routes,
-})
+// const router = VueRouter.createRouter({
+// 	history: VueRouter.createWebHashHistory(),
+// 	routes,
+// })
 
 
 
@@ -44,8 +44,13 @@ const app = Vue.createApp({
 		bookData.forEach(book => {
 			this.books.push({ ...book, like: false, cart: 0 });
 		})
+	},
+	components:{
+		'cv-search': searchPage,
 	}
+
 })
-app.use(router)
-	.use(vuetify)
-	.mount('#app')
+app
+// .use(router)
+.use(vuetify)
+.mount('#app')
