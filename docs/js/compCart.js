@@ -35,5 +35,3 @@ const cartPage = {
 		</div>
 	`,
 }
-
-export { cartPage as default };

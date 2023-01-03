@@ -51,6 +51,3 @@ const searchPage = {
 	// `
 	,
 }
-
-
-export { searchPage as default };

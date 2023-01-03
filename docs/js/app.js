@@ -1,27 +1,23 @@
-import data from '../data.json' assert { type: 'json' };
 const bookData = data.books;
-
-import searchPage from "./compSearch.js"
-import cartPage from "./compCart.js"
 
 const { createVuetify } = Vuetify;
 const vuetify = createVuetify();
 
 
-// const Home = { template: '<div>Home</div>' }
-// const About = { template: '<div>About</div>' }
+const Home = { template: '<div>Home</div>' }
+const About = { template: '<div>About</div>' }
 
-// const routes = [
-// 	{ path: '/', component: Home },
-// 	{ path: '/about', component: About },
-// 	{ path: '/search', component: searchPage },
-// 	{ path: '/cart', component: cartPage }
-// ]
+const routes = [
+	{ path: '/', component: Home },
+	{ path: '/about', component: About },
+	{ path: '/search', component: searchPage },
+	{ path: '/cart', component: cartPage }
+]
 
-// const router = VueRouter.createRouter({
-// 	history: VueRouter.createWebHashHistory(),
-// 	routes,
-// })
+const router = VueRouter.createRouter({
+	history: VueRouter.createWebHashHistory(),
+	routes,
+})
 
 
 
@@ -51,6 +47,6 @@ const app = Vue.createApp({
 
 })
 app
-// .use(router)
+.use(router)
 .use(vuetify)
 .mount('#app')
