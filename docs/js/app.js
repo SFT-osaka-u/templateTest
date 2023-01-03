@@ -4,7 +4,7 @@ const { createVuetify } = Vuetify;
 const vuetify = createVuetify();
 
 
-const Home = { template: '<div>Home</div>' }
+const Home = { template: '<div>landing page<br><router-link to="/search">Go to Search Page</router-link></div>' }
 const About = { template: '<div>About</div>' }
 
 const routes = [

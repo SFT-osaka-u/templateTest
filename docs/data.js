@@ -8,16 +8,6 @@ const data = {
     },
     "books": [
         {
-            "isbn": 9784062932486,
-            "title": "空白を満たしなさい",
-            "author": "平野啓一郎",
-            "publisher": "講談社文庫",
-            "originalPrice": 680,
-            "sellingPrice": 340,
-            "genre": "文系その他",
-            "stock": 3
-        },
-        {
             "isbn": 9789880030598,
             "title": "English Firsthand (4th Edition) 1: Student Book with Audio CD",
             "author": "Marc Hergesen",
