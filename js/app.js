@@ -4,12 +4,20 @@ const { createVuetify } = Vuetify;
 const vuetify = createVuetify();
 
 
-const Home = { template: '<div>landing page<br><router-link to="/search">Go to Search Page</router-link></div>' }
-const About = { template: '<div>About</div>' }
+const Home = { template: `
+				<transition
+					enter-active-class="animate__animated animate__backInRight"
+					leave-active-class="animate__animated animate__backOutRight"
+				><div>
+				landing page<br>
+				<router-link to="/search">Go to Search Page</router-link>
+				</div></transition>
+				`
+			}
 
 const routes = [
 	{ path: '/', component: Home },
-	{ path: '/about', component: About },
+	{ path: '/about', component: aboutPage },
 	{ path: '/search', component: searchPage },
 	{ path: '/cart', component: cartPage }
 ]

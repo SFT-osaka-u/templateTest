@@ -6,6 +6,57 @@ const data = {
         "fontStyle": "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap' rel='stylesheet'>",
         "fontFamily": "font-family: 'Zen Maru Gothic', sans-serif;"
     },
+    "form": {
+        "faculties": ["文学部", "法学部", "経済学部", "外国語学部", "人間科学部", "基礎工学部", "工学部", "医学部", "歯学部", "薬学部", "その他"],
+        "grades": ["学部1年生", "学部2年生", "学部3年生", "学部4年生", "その他"],
+        "dates": ["4/6(水)", "4/7(木)", "4/8(金)", "4/11(月)", "4/12(火)", "4/13(水)", "4/14(木)", "4/15(金)"]
+    },
+    "about": {
+        "sns": [
+            {
+                "media": "twitter",
+                "text": "支部Twitter",
+                "url": "https://twitter.com/study42_OU",
+            },
+            {
+                "media": "twitter",
+                "text": "新歓Twitter",
+                "url": "https://twitter.com/study42_ou_",
+            },
+            {
+                "media": "instagram",
+                "text": "Instagram",
+                "url": "https://www.instagram.com/studyfortwo_ou/",
+            },
+            {
+                "media": "line",
+                "text": "公式LINE",
+                "url": "https://lin.ee/pf1MTkW",
+            },
+            {
+                "media": "email",
+                "text": "メール",
+                "url": "mailto:branch_osaka@studyfortwo.org",
+            },
+        ],
+        "articles":[
+            {
+                "icon":"",
+                "heading":"STUDY FOR TWO",
+                "text":"ないようないようないようないよう"
+            },
+            {
+                "icon":"",
+                "heading":"阪大支部",
+                "text":"ないようないようないようないよう"
+            },
+            {
+                "icon":"mdi-finance",
+                "heading":"支援実績",
+                "text":"ないようないようないようないよう"
+            },
+        ]
+    },
     "books": [
         {
             "isbn": 9789880030598,

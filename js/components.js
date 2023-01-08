@@ -1,27 +1,42 @@
 
 
+const headingComponent = {
+	props: {
+		badge: Boolean,
+		content: Number,
+		color: String,
+		textColor: String,
+		icon: String,
+		heading: String
+	},
+	template: `
+		<v-container style="padding-bottom:0px">
+		<h2>
+			<v-badge
+				:content="content"
+				:color="badge? color : 'transparent'"
+				:text-color="textColor"
+			><v-icon>{{ icon }}</v-icon></v-badge>
+			{{ heading }}
+		</h2>
+		</v-container>
+	`
+}
+
 const snsComponent = {
 	data() {
 		return {
 			show: false,
-			items: [
-				{
-					text: "twitter",
-					icon: "mdi-twitter"
-				},
-				{
-					text: "instagram",
-					icon: "mdi-instagram"
-				},
-				{
-					text: "LINE",
-					icon: "mdi-chat"
-				},
-				{
-					text: "mail",
-					icon: "mdi-email"
+			sns: data.about.sns.map(el => {
+				let icon;
+				switch (el.media) {
+					case "twitter": icon = "mdi-twitter"; break;
+					case "instagram": icon = "mdi-instagram"; break;
+					case "line": icon = "mdi-chat"; break;
+					case "email": icon = "mdi-email-outline"; break;
 				}
-			]
+				return { ...el, icon }
+			})
 		}
 	},
 	template: `
@@ -30,41 +45,55 @@ const snsComponent = {
 				<v-btn icon="mdi-menu-down" v-bind="props"></v-btn>
 			</template>
 			<v-list>
+				<router-link to="/about" style="text-decoration: none; color:black;">
 				<v-list-item
-					v-for="(item, i) in items"
+					key="about"
+					value="about"
+					active-color="primary"
+				>
+					<template v-slot:prepend>
+						<v-icon>mdi-information-outline</v-icon>
+					</template>
+					<v-list-item-title>about</v-list-item-title>
+      			</v-list-item>
+				</router-link>
+				<v-list-item
+					v-for="(item, i) in sns"
 					:key="i"
 					:value="item"
 					active-color="primary"
+					:href="item.url"
+					target="blank_"
+					rel="noopener"
 				>
 					<template v-slot:prepend>
 						<v-icon :icon="item.icon"></v-icon>
 					</template>
-        	<v-list-item-title v-text="item.text"></v-list-item-title>
-      	</v-list-item>
+        			<v-list-item-title v-text="item.text"></v-list-item-title>
+      			</v-list-item>
 			</v-list>
     </v-menu>
 	`
 }
 
-
 const searchComponent = {
 	data() {
 		return {
-			drawer: false,
-			loaded: false,
-			loading: false,
-			genres: ['法', '政治・経済', '文系その他', '英語', '第二言語', '数学', '理科', '情報・統計', '理系その他', '教職・資格']
+			// drawer: false,
+			genres: ['法', '政治・経済', '文系その他', '英語', '第二言語', '数学', '理科', '情報・統計', '理系その他', '教職・資格'],
+			keyWord: "",
+			selected: {
+				method: "教科書名",
+				genres: []
+			}
 		}
 	},
 	methods: {
-		onClick() {
-			this.loading = true
-
-			setTimeout(() => {
-				this.loading = false
-				this.loaded = true
-			}, 2000)
-		},
+		search() {
+			const resultBooks = store.search(this.selected, this.keyWord);
+			this.$emit('search', resultBooks);
+			// console.log(this.keyWord, this.selected, resultBooks);
+		}
 	},
 	template: `
 		<v-card
@@ -73,23 +102,25 @@ const searchComponent = {
 		>
 			<v-card-text>
 				<v-text-field
-					:loading="loading"
+					v-model="keyWord"
 					density="compact"
 					variant="solo"
 					label="キーワード"
 					append-inner-icon="mdi-magnify"
 					single-line
 					hide-details
-					@click:append-inner="onClick"
+					@click:append-inner="search"
 				></v-text-field>
 			</v-card-text>
 			<v-card-text>
 				<v-select
+					v-model="selected.method"
 					:items="['フリーワード', '教科書名', 'ISBN']"
 					label="検索方法"
 					density="comfortable"
 				></v-select>
 				<v-select
+					v-model="selected.genres"
 					clearable
 					chips
 					:items="genres"
@@ -98,7 +129,7 @@ const searchComponent = {
 					multiple
 				></v-select>
 			</v-card-text>
-			</v-card>
+		</v-card>
 	`
 }
 
@@ -114,20 +145,27 @@ const headerComponent = {
 		place: String,
 		fontFamily: String
 	},
-	emits: ['sns', 'menu'],
-	methods: {
-		emitState(arg) {
-			this.$emit(arg);
-		}
-	},
 	components: {
 		'cv-sns': snsComponent,
 		'cv-search': searchComponent
 	},
+	methods: {
+		closeDrawer(resultBooks) {
+			this.drawer = false;
+			this.$emit('changeBooks', resultBooks)
+		},
+		pageCheck() {
+			if (this.$route.path != "/search") {
+				this.$router.push('/search');
+			} else {
+				this.drawer = !this.drawer
+			}
+		}
+	},
 	template: `
 		<v-app-bar density="comfortable" height="72" color="light-green">
 			<template v-slot:prepend>
-				<v-btn icon="mdi-card-search" @click.stop="drawer = !drawer"></v-btn>
+			<v-btn icon="mdi-card-search" @click.stop="pageCheck"></v-btn>
 			</template>
 			<v-app-bar-title style="text-align: center; margin:auto; font-weight: 500;" :style="fontFamily">{{ title }}<br>
 				<p style="font-size: small;text-align: center;">{{ date }} | {{ place }}</p>
@@ -141,22 +179,23 @@ const headerComponent = {
 			location="start"
 			temporary
 		>
-		<cv-search></cv-search>
+		<cv-search @search="closeDrawer"></cv-search>
 		</v-navigation-drawer>
 	`
 
 }
 
-
-
 const cartBtnComponent = {
-	props: {
-		cart: Number
+	data() {
+		return {
+			cart: store.state.wholeCart
+		}
 	},
 	template: `
 		<div 
 			style="position:fixed; z-index:1; bottom:24px; right:24px;"
 		>
+		<router-link to="/cart">
 			<v-badge
 				:content="cart>0 ? cart:''"
 				:color="cart>0 ? 'cyan' : 'transparent'"
@@ -171,11 +210,28 @@ const cartBtnComponent = {
 					style="color:white;"
 				></v-btn>
 			</v-badge>
+			</router-link>
+		</div>
+	`
+}
+
+const searchBtnComponent = {
+	template: `
+		<div 
+			style="position:fixed; z-index:1; bottom:24px; right:24px;"
+		>
+		<router-link to="/search" style="text-decoration: none;">
+			<v-btn
+				icon="mdi-magnify"
+				color="#212121"
+				size="x-large"
+				style="color:white;"
+			></v-btn>
+		</router-link>
 		</div>
 	`
 
 }
-
 
 const bookCard = {
 	props: {
@@ -209,12 +265,16 @@ const bookCard = {
 	},
 	emits: ['like', 'cart'],
 	methods: {
-		emitLike() {
-			this.$emit('like', this.isbn);
-			// console.log(this.isbn);
+		changeLike() {
+			store.changeLike(this.isbn);
 		},
-		emitCart(calc) {
-			this.$emit('cart', this.isbn, calc);
+		changeCart(calc) {
+			store.changeCart(this.isbn, calc);
+			if (calc === 'add') {
+				this.wholeCart++;
+			} else if (calc === 'remove') {
+				this.wholeCart--;
+			}
 		}
 	},
 	template: `
@@ -239,20 +299,20 @@ const bookCard = {
 							icon="mdi-heart"
 							size="x-small"
 							:class="like ? 'text-red' : ''"
-							@click="emitLike"
+							@click="changeLike"
 							style="margin-top:8px; margin-right:8px;"
 						></v-btn>
 						<v-btn
 							icon="mdi-cart-plus"
 							size="x-small"
-							@click="emitCart('add');"
+							@click="changeCart('add');"
 							style="margin-top:8px; margin-right:8px;"
 							value="add"
 							></v-btn>
 						<v-btn
 							icon="mdi-cart-minus"
 							size="x-small"
-							@click="emitCart('remove');"
+							@click="changeCart('remove');"
 							style="margin-top:8px; margin-right:8px;"
 							:disabled="cart<=0"
 						></v-btn>
@@ -319,23 +379,12 @@ const bookCardsComponent = {
 	components: {
 		'cv-card': bookCard
 	},
-	emits: ['like', 'cart'],
-	methods: {
-		emitLikeRelay(isbn) {
-			this.$emit('like', isbn);
-			// console.log(isbn);
-		},
-		emitCartRelay(isbn, calc) {
-			this.$emit('cart', isbn, calc);
-			// console.log(isbn, calc);
-		}
-	},
 	template: `
 		<v-container fluid>
 			<v-row dense>
 				<v-col v-for="(book, index) in books" :cols="bookFlex">
 					<transition-group name="flip-list" tag="div">
-						<cv-card v-bind="book" :key="book.isbn" @like="emitLikeRelay" @cart="emitCartRelay">
+						<cv-card v-bind="book" :key="book.isbn">
 						</cv-card>
 					</transition-group>
 				</v-col>
@@ -355,17 +404,6 @@ const bookCardDialog = {
 	},
 	components: {
 		'cv-card': bookCard
-	},
-	emits: ['like', 'cart'],
-	methods: {
-		emitLikeRelay(isbn) {
-			this.$emit('like', isbn);
-			// console.log(this.book);
-		},
-		emitCartRelay(isbn, calc) {
-			this.$emit('cart', isbn, calc);
-			// console.log(isbn, calc);
-		}
 	},
 	template: `
 	<div class="text-center">
@@ -387,7 +425,7 @@ const bookCardDialog = {
 					</v-btn>
 				</v-badge>
       </template>
-				<cv-card v-bind="book" :key="book.isbn" @like="emitLikeRelay" @cart="emitCartRelay">  
+				<cv-card v-bind="book" :key="book.isbn">  
 				</cv-card>
 		</v-dialog>
   </div>
@@ -402,28 +440,17 @@ const bookTableComponent = {
 		return {
 			prices: this.books.map(book => {
 				const price = (book.sellingPrice || 0).toLocaleString('ja-JP',
-						{
-							style: 'currency',
-							currency: 'JPY'
-						}
-					)
+					{
+						style: 'currency',
+						currency: 'JPY'
+					}
+				)
 				return price;
 			})
 		}
 	},
 	components: {
 		'cv-book-card-dialog': bookCardDialog
-	},
-	emits: ['like', 'cart'],
-	methods: {
-		emitLikeRelay(isbn) {
-			this.$emit('like', isbn);
-			// console.log(isbn);
-		},
-		emitCartRelay(isbn, calc) {
-			this.$emit('cart', isbn, calc);
-			// console.log(isbn, calc);
-		}
 	},
 	template: `
 	<div style="margin:auto;">
@@ -444,7 +471,7 @@ const bookTableComponent = {
         v-for="(book,index) in books"
         :key="book.isbn"
       >
-				<td><cv-book-card-dialog :book="book" @like="emitLikeRelay" @cart="emitCartRelay"></cv-book-card-dialog></td>
+				<td><cv-book-card-dialog :book="book"></cv-book-card-dialog></td>
         <td>{{ book.title }}</td>
 				<td>{{ prices[index] }}</td>
 				<td>{{ book.stock }}</td>
@@ -456,31 +483,20 @@ const bookTableComponent = {
 	`
 }
 
-
 const cardsShowCaseComponent = {
-	props:{
-		books:Array
+	props: {
+		books: Array
 	},
 	data() {
 		return {
 			showCase: "cv-book-card",
 		}
 	},
-	components:{
+	components: {
 		'cv-book-card': bookCardsComponent,
 		'cv-book-table': bookTableComponent,
 	},
 	emits: ['like', 'cart'],
-	methods: {
-		emitLikeRelay(isbn) {
-			this.$emit('like', isbn);
-			// console.log(this.book);
-		},
-		emitCartRelay(isbn, calc) {
-			this.$emit('cart', isbn, calc);
-			// console.log(isbn, calc);
-		}
-	},
 	template: `
 		<v-container style="margin:auto">
 			<v-row>
@@ -514,7 +530,7 @@ const cardsShowCaseComponent = {
 					name="component-fade"
 					mode="out-in"
 				>
-				 <component :is="showCase" :books="books" @like="emitLikeRelay" @cart="emitCartRelay"></component>
+				 <component :is="showCase" :books="books"></component>
 				</transition>
 			</v-row>
 		</v-container>
@@ -522,13 +538,143 @@ const cardsShowCaseComponent = {
 }
 
 const reserveFormComponent = {
-	props:{
+	data() {
+		return {
+			valid: true,
+			name: "",
+			faculty: null,
+			otherF: null,
+			grade: null,
+			otherG: null,
+			date: null,
+			email: "",
+			cookie: true,
 
+			rule: [v => !!v || 'required']
+		}
 	},
-	data(){
+	props: {
+		faculties: Array,
+		grades: Array,
+		dates: Array
+	},
+	methods: {
+		async validate() {
+			const { valid } = await this.$refs.form.validate()
 
+			if (valid) alert('Form is valid')
+		}
 	},
-	template:`
-	
+	template: `
+		<v-container style="margin:auto;">
+			<v-form
+				ref="form"
+				v-model="valid"
+				lazy-validation
+			>
+				<v-text-field
+					v-model="name"
+					:rules="rule"
+					label="お名前"
+					density="compact"
+					variant="underlined"
+					required
+				></v-text-field>
+
+				<v-select
+					v-model="faculty"
+					:items="faculties"
+					:rules="rule"
+					label="所属"
+					density="compact"
+					variant="underlined"
+					required
+				></v-select>
+				<v-text-field
+					v-show="faculty == 'その他'"
+					v-model="otherF"
+					:rules="rule"
+					label="所属をご入力ください"
+					density="compact"
+					style="padding-left:16px"
+					required
+				></v-text-field>
+				
+				<v-select
+					v-model="grade"
+					:items="grades"
+					:rules="rule"
+					label="学年"
+					density="compact"
+					variant="underlined"
+					required
+				></v-select>
+				<v-text-field
+					v-show="grade == 'その他'"
+					v-model="otherG"
+					:rules="rule"
+					label="学年をご入力ください"
+					density="compact"
+					style="padding-left:16px"
+					required
+				></v-text-field>
+
+				<v-select
+					v-model="date"
+					:items="dates"
+					:rules="rule"
+					label="お受取日"
+					density="compact"
+					variant="underlined"
+					required
+				></v-select>
+
+				<v-text-field
+					v-model="email"
+					:rules="[
+						v => !!v || 'E-mail is required',
+						v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+					]"
+					label="メールアドレス"
+					density="compact"
+					variant="underlined"
+					required
+				></v-text-field>
+
+				<v-checkbox
+					v-model="cookie"
+					label="Cookieを利用して入力情報をブラウザに保存する（2週間で削除されます）"
+					density="compact"
+				></v-checkbox>
+
+				<v-btn
+					color="success"
+					class="mr-4"
+					@click="validate"
+				>入力内容を確認して予約する</v-btn>
+
+			</v-form>
+		</v-container>
+	`
+}
+
+const articlesComponent = {
+	props: {
+		articles: Array
+	},
+	components: {
+		'cv-heading': headingComponent
+	},
+	template: `
+		<template v-for="(article, i) in articles">
+			<cv-heading
+				:icon="article.icon || 'mdi-information'"
+				:heading="article.heading"
+				:key="i"
+			></cv-heading>
+			<v-container>
+				<p style="padding-left:36px">{{ article.text }}<p>
+			</v-container>
+		</template>
 	`
 }

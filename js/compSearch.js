@@ -4,48 +4,35 @@ const searchPage = {
 		return {
 			settings: store.state.settings,
 			books: store.state.books,
-			wholeCart: 0,
-		}
-	},
-	methods: {
-		changeLike(isbn){
-			store.changeLike(isbn);
-		},
-		changeCart(isbn, calc){
-			store.changeCart(isbn, calc);
-			if(calc === 'add'){
-				this.wholeCart++;
-			}else if(calc === 'remove'){
-				this.wholeCart--;
-			}
+			wholeCart: store.state.wholeCart
 		}
 	},
 	components: {
 		'cv-header': headerComponent,
+		'cv-heading': headingComponent,
 		'cv-sns': snsComponent,
 		'cv-cart-btn': cartBtnComponent,
-		'cv-cards-show-case': cardsShowCaseComponent,
+		'cv-cards-show-case': cardsShowCaseComponent
 	},
-	template: 
-	// `
-	// 	<div>
-	// 		<cv-header v-bind="settings"></cv-header>
-	// 		<v-main>
-	// 			<cv-cards-show-case :books="books" @like="changeLike" @cart="changeCart"></cv-cards-show-case>
-				
-	// 				<cv-cart-btn :cart="wholeCart"></cv-cart-btn>
-				
-	// 		</v-main>
-	// 	</div>
-	// `
-	`
+	methods:{
+		changeBooks(resultBooks){
+			this.books = resultBooks;
+		}
+	},
+	template: `
 		<div>
-			<cv-header v-bind="settings"></cv-header>
+			<cv-header v-bind="settings" @changeBooks="changeBooks"></cv-header>
 			<v-main>
-				<cv-cards-show-case :books="books" @like="changeLike" @cart="changeCart"></cv-cards-show-case>
-				<router-link to="/cart">
-					<cv-cart-btn :cart="wholeCart"></cv-cart-btn>
-				</router-link>
+				<cv-heading
+					badge="true"
+					:content="books.length"
+					color="orange"
+					textColor="white"
+					icon="mdi-magnify"
+					heading="検索結果"
+				></cv-heading>
+				<cv-cards-show-case :books="books"></cv-cards-show-case>
+				<cv-cart-btn :cart="wholeCart"></cv-cart-btn>
 			</v-main>
 		</div>
 	`
