@@ -12,41 +12,66 @@ const store = {
 		},
 
 		books: [],
-		wholeCart: [0] // なぜか配列にいれないとcartBtnComponentでreactiveに取り出せない
+		booksInCart: [],
+		booksLiked: [],
+		wholeCart: [0], // なぜか配列にいれないとcartBtnComponentでreactiveに取り出せない
+		likes: [0]
 	}),
 	changeLike(isbn) {
-		console.log('call like', isbn);
+		// console.log('call like', isbn);
 		this.state.books.forEach(book => {
 			if (book.isbn == isbn) {
 				book.like = !book.like;
 			}
 		})
+		this.filterByLike();
+		this.state.likes[0] = this.state.booksLiked.length;
 	},
 	changeCart(isbn, calc) {
-		console.log(this.state.wholeCart)
+		// console.log(this.state.wholeCart)
 		this.state.books.forEach(book => {
 			if (book.isbn == isbn) {
 				if (calc === 'add') {
 					book.cart++;
-					this.state.wholeCart[0]++;
+					this.state.wholeCart[0] ++;
 				} else if (calc === 'remove') {
 					if (book.cart > 0) {
 						book.cart--;
-						this.state.wholeCart[0]--;
-					} else {
+						this.state.wholeCart[0] --;
+				} else {
 						book.cart = 0;
-						this.state.wholeCart[0] = here.state.wholeCart[0];
 					}
 				}
 			}
 		})
-		console.log(this.state.wholeCart)
+		this.filterByCart();
+		// console.log(this.state.wholeCart)
 	},
-	filterByLike(books) {
-		return books.filter(book => book.like);
+	filterByLike() {
+		// return books.filter(book => book.like);
+		// this.state.booksLiked = [];
+		for(let i = 0; i < this.state.likes; i++){
+			this.state.booksLiked.pop();
+		}
+		this.state.books.forEach(book => {
+			if(book.like){
+				this.state.booksLiked.push(book);
+			}
+		})
+		this.saveInfo2Cookie();
 	},
-	filterByCart(books) {
-		return books.filter(book => { return book.cart > 0 });
+	filterByCart() {
+		// return books.filter(book => { return book.cart > 0 });
+		// for(let i = 0; i < this.state.booksInCart.length; i++){
+		// 	this.state.booksInCart.pop();
+		// }
+		this.state.booksInCart.splice(0, this.state.booksInCart.length);
+		this.state.books.forEach(book => {
+			if(book.cart > 0){
+				this.state.booksInCart.push(book);
+			}
+		})
+		this.saveInfo2Cookie();
 	},
 	search(conditions, keyWord) {
 		// keyWordに合うものを各検索方法で返す
@@ -93,6 +118,15 @@ const store = {
 		// 検索結果を返す
 		return booksByGenre;
 	},
-
+	
+	saveInfo2Cookie(){
+		let booksActive = [];
+		this.state.books.forEach(book => {
+			if(book.cart > 0 || book.like){
+				booksActive.push(book);
+			}
+		})
+		setCookie("booksActive", booksActive);
+	},
 
 }

@@ -3,20 +3,8 @@ const bookData = data.books;
 const { createVuetify } = Vuetify;
 const vuetify = createVuetify();
 
-
-const Home = { template: `
-				<transition
-					enter-active-class="animate__animated animate__backInRight"
-					leave-active-class="animate__animated animate__backOutRight"
-				><div>
-				landing page<br>
-				<router-link to="/search">Go to Search Page</router-link>
-				</div></transition>
-				`
-			}
-
 const routes = [
-	{ path: '/', component: Home },
+	{ path: '/', component: landingPage },
 	{ path: '/about', component: aboutPage },
 	{ path: '/search', component: searchPage },
 	{ path: '/cart', component: cartPage }
@@ -34,7 +22,9 @@ const app = Vue.createApp({
 		return {
 			settings: store.state.settings,
 			books: store.state.books,
-			wholeCart: store.state.wholeCart
+			wholeCart: store.state.wholeCart,
+			booksInCart: store.state.booksInCart,
+			booksLiked: store.state.booksLiked
 		}
 	},
 	created() {
@@ -48,6 +38,20 @@ const app = Vue.createApp({
 		bookData.forEach(book => {
 			this.books.push({ ...book, like: false, cart: 0 });
 		})
+
+		const booksActive = getCookie("booksActive");
+
+		if(!!booksActive){
+			console.log("active books exist.")
+			booksActive.forEach(book => {
+				if(book.like){store.changeLike(book.isbn)};
+				if(book.cart > 0){
+					for(let i = 0; i < book.cart; i++){
+						store.changeCart(book.isbn, "add");
+					}
+				}
+			})
+		}
 	},
 	components:{
 		'cv-search': searchPage,

@@ -66,7 +66,8 @@ const data = {
             "originalPrice": 2910,
             "sellingPrice": 1455,
             "genre": "英語",
-            "stock": 1
+            "stock": 1,
+            "sold": 5
         },
         {
             "isbn": 9789813130234,
@@ -76,7 +77,8 @@ const data = {
             "originalPrice": 2910,
             "sellingPrice": 1455,
             "genre": "英語",
-            "stock": 2
+            "stock": 2,
+            "sold": 5
         },
         {
             "isbn": 9789813130227,
@@ -86,7 +88,8 @@ const data = {
             "originalPrice": 2910,
             "sellingPrice": 1455,
             "genre": "英語",
-            "stock": 1
+            "stock": 1,
+            "sold": 5
         },
         {
             "isbn": 9789620199325,
@@ -96,7 +99,8 @@ const data = {
             "originalPrice": 3454,
             "sellingPrice": 1727,
             "genre": "英語",
-            "stock": 2
+            "stock": 2,
+            "sold": 5
         },
         {
             "isbn": 9789620199318,
@@ -106,7 +110,8 @@ const data = {
             "originalPrice": 3140,
             "sellingPrice": 1570,
             "genre": "英語",
-            "stock": 6
+            "stock": 6,
+            "sold": 5
         },
         {
             "isbn": 9788976998576,
@@ -116,7 +121,8 @@ const data = {
             "originalPrice": 1450,
             "sellingPrice": 725,
             "genre": "第二言語",
-            "stock": 2
+            "stock": 2,
+            "sold": 1
         },
         {
             "isbn": 9788955189322,
@@ -126,7 +132,8 @@ const data = {
             "originalPrice": 1450,
             "sellingPrice": 725,
             "genre": "第二言語",
-            "stock": 2
+            "stock": 2,
+            "sold": 1
         },
         {
             "isbn": 9788955189315,
@@ -136,7 +143,8 @@ const data = {
             "originalPrice": 1450,
             "sellingPrice": 725,
             "genre": "第二言語",
-            "stock": 2
+            "stock": 2,
+            "sold": 1
         },
         {
             "isbn": 9788953934283,
@@ -146,7 +154,8 @@ const data = {
             "originalPrice": 1909,
             "sellingPrice": 955,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9788877157355,
@@ -156,7 +165,8 @@ const data = {
             "originalPrice": 4000,
             "sellingPrice": 2000,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9788875734398,
@@ -166,7 +176,8 @@ const data = {
             "originalPrice": 7138,
             "sellingPrice": 3569,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9788875734275,
@@ -176,7 +187,8 @@ const data = {
             "originalPrice": 20.3,
             "sellingPrice": 11,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9788855700160,
@@ -186,7 +198,8 @@ const data = {
             "originalPrice": 3000,
             "sellingPrice": 1500,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9787301077658,
@@ -196,7 +209,8 @@ const data = {
             "originalPrice": 400,
             "sellingPrice": 200,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9786200014344,
@@ -206,7 +220,8 @@ const data = {
             "originalPrice": 900,
             "sellingPrice": 450,
             "genre": "情報・統計",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784944178766,
@@ -216,7 +231,8 @@ const data = {
             "originalPrice": 2200,
             "sellingPrice": 1100,
             "genre": "理科",
-            "stock": 1
+            "stock": 1,
+            "sold": 3
         },
         {
             "isbn": 9784944178568,
@@ -226,7 +242,8 @@ const data = {
             "originalPrice": 2520,
             "sellingPrice": 1260,
             "genre": "理科",
-            "stock": 1
+            "stock": 1,
+            "sold": 3
         },
         {
             "isbn": 9784944178544,
@@ -236,7 +253,8 @@ const data = {
             "originalPrice": 2205,
             "sellingPrice": 1103,
             "genre": "数学",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784944178209,
@@ -246,7 +264,8 @@ const data = {
             "originalPrice": 2200,
             "sellingPrice": 1100,
             "genre": "数学",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784931315501,
@@ -256,7 +275,8 @@ const data = {
             "originalPrice": 1300,
             "sellingPrice": 650,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784916092885,
@@ -266,7 +286,8 @@ const data = {
             "originalPrice": 4400,
             "sellingPrice": 2200,
             "genre": "政治・経済",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784909189158,
@@ -276,7 +297,8 @@ const data = {
             "originalPrice": 2400,
             "sellingPrice": 1200,
             "genre": "教職・資格",
-            "stock": 1
+            "stock": 1,
+            "sold": 10
         },
         {
             "isbn": 9784909189080,
@@ -286,7 +308,8 @@ const data = {
             "originalPrice": 2000,
             "sellingPrice": 1000,
             "genre": "教職・資格",
-            "stock": 1
+            "stock": 1,
+            "sold": 10
         },
         {
             "isbn": 9784907165901,
@@ -296,7 +319,8 @@ const data = {
             "originalPrice": 2320,
             "sellingPrice": 1160,
             "genre": "数学",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784907165659,
@@ -306,7 +330,8 @@ const data = {
             "originalPrice": 2100,
             "sellingPrice": 1050,
             "genre": "数学",
-            "stock": 2
+            "stock": 2,
+            "sold": 1
         },
         {
             "isbn": 9784907165642,
@@ -316,7 +341,8 @@ const data = {
             "originalPrice": 2400,
             "sellingPrice": 1200,
             "genre": "数学",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784907165567,
@@ -326,7 +352,8 @@ const data = {
             "originalPrice": 2220,
             "sellingPrice": 1110,
             "genre": "情報・統計",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784907165529,
@@ -336,7 +363,8 @@ const data = {
             "originalPrice": 2320,
             "sellingPrice": 1160,
             "genre": "数学",
-            "stock": 2
+            "stock": 2,
+            "sold": 1
         },
         {
             "isbn": 9784907165383,
@@ -346,7 +374,8 @@ const data = {
             "originalPrice": 2323,
             "sellingPrice": 1162,
             "genre": "数学",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784906033584,
@@ -356,7 +385,8 @@ const data = {
             "originalPrice": 3000,
             "sellingPrice": 1500,
             "genre": "教職・資格",
-            "stock": 1
+            "stock": 1,
+            "sold": 10
         },
         {
             "isbn": 9784905426547,
@@ -366,7 +396,8 @@ const data = {
             "originalPrice": null,
             "sellingPrice": null,
             "genre": "英語",
-            "stock": 1
+            "stock": 1,
+            "sold": 5
         },
         {
             "isbn": 9784905343035,
@@ -376,7 +407,8 @@ const data = {
             "originalPrice": 2500,
             "sellingPrice": 1250,
             "genre": "第二言語",
-            "stock": 3
+            "stock": 3,
+            "sold": 1
         },
         {
             "isbn": 9784904702055,
@@ -386,7 +418,8 @@ const data = {
             "originalPrice": 2200,
             "sellingPrice": 1100,
             "genre": "法",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784904147009,
@@ -396,7 +429,8 @@ const data = {
             "originalPrice": 2400,
             "sellingPrice": 1200,
             "genre": "第二言語",
-            "stock": 3
+            "stock": 3,
+            "sold": 1
         },
         {
             "isbn": 9784903520209,
@@ -406,7 +440,8 @@ const data = {
             "originalPrice": 2100,
             "sellingPrice": 1050,
             "genre": "文系その他",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784902964448,
@@ -416,7 +451,8 @@ const data = {
             "originalPrice": 1800,
             "sellingPrice": 900,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784902773781,
@@ -426,7 +462,8 @@ const data = {
             "originalPrice": 1320,
             "sellingPrice": 660,
             "genre": "教職・資格",
-            "stock": 1
+            "stock": 1,
+            "sold": 10
         },
         {
             "isbn": 9784902773743,
@@ -436,7 +473,8 @@ const data = {
             "originalPrice": 1200,
             "sellingPrice": 600,
             "genre": "教職・資格",
-            "stock": 1
+            "stock": 1,
+            "sold": 10
         },
         {
             "isbn": 9784902773538,
@@ -446,7 +484,8 @@ const data = {
             "originalPrice": 1200,
             "sellingPrice": 600,
             "genre": "文系その他",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784901683593,
@@ -456,7 +495,8 @@ const data = {
             "originalPrice": 2600,
             "sellingPrice": 1300,
             "genre": "理科",
-            "stock": 1
+            "stock": 1,
+            "sold": 3
         },
         {
             "isbn": 9784900790056,
@@ -466,7 +506,8 @@ const data = {
             "originalPrice": 1200,
             "sellingPrice": 600,
             "genre": "英語",
-            "stock": 1
+            "stock": 1,
+            "sold": 5
         },
         {
             "isbn": 9784894768369,
@@ -476,7 +517,8 @@ const data = {
             "originalPrice": 2000,
             "sellingPrice": 1000,
             "genre": "文系その他",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784894761957,
@@ -486,7 +528,8 @@ const data = {
             "originalPrice": 3800,
             "sellingPrice": 1900,
             "genre": "文系その他",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784894281776,
@@ -496,7 +539,8 @@ const data = {
             "originalPrice": 800,
             "sellingPrice": 400,
             "genre": "数学",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784891749095,
@@ -506,7 +550,8 @@ const data = {
             "originalPrice": 1800,
             "sellingPrice": 900,
             "genre": "第二言語",
-            "stock": 3
+            "stock": 3,
+            "sold": 1
         },
         {
             "isbn": 9784891746889,
@@ -516,7 +561,8 @@ const data = {
             "originalPrice": 1800,
             "sellingPrice": 900,
             "genre": "第二言語",
-            "stock": 5
+            "stock": 5,
+            "sold": 1
         },
         {
             "isbn": 9784891746360,
@@ -526,7 +572,8 @@ const data = {
             "originalPrice": 2500,
             "sellingPrice": 1250,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784890853700,
@@ -536,7 +583,8 @@ const data = {
             "originalPrice": 952,
             "sellingPrice": 476,
             "genre": "歴史",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         },
         {
             "isbn": 9784890134304,
@@ -546,7 +594,8 @@ const data = {
             "originalPrice": 4500,
             "sellingPrice": 2250,
             "genre": "理科",
-            "stock": 1
+            "stock": 1,
+            "sold": 3
         },
         {
             "isbn": 9784888962834,
@@ -556,7 +605,8 @@ const data = {
             "originalPrice": 1900,
             "sellingPrice": 950,
             "genre": "第二言語",
-            "stock": 1
+            "stock": 1,
+            "sold": 1
         }
     ]
 }

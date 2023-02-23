@@ -280,7 +280,6 @@ const bookCard = {
 	template: `
 		
 			<v-card
-				class="mx-auto"
 				:color="like ? '#FFCDD2' : ''"
 				:elevation="cart > 3 ? 11 :(cart>0 ? cart*3+2:2)"
 			>
@@ -374,15 +373,15 @@ const bookCard = {
 const bookCardsComponent = {
 	props: {
 		books: Array,
-		bookFlex: Number
 	},
 	components: {
 		'cv-card': bookCard
 	},
-	template: `
-		<v-container fluid>
+	template:
+		`
+		<v-container fluid  class="pt-0">
 			<v-row dense>
-				<v-col v-for="(book, index) in books" :cols="bookFlex">
+				<v-col v-for="(book, index) in books" align-self="stretch">
 					<transition-group name="flip-list" tag="div">
 						<cv-card v-bind="book" :key="book.isbn">
 						</cv-card>
@@ -409,6 +408,7 @@ const bookCardDialog = {
 	<div class="text-center">
     <v-dialog
       v-model="dialog"
+	  style="max-width:480px"
     >
       <template v-slot:activator="{ props }">
 				<v-badge
@@ -437,49 +437,65 @@ const bookTableComponent = {
 		books: Array
 	},
 	data() {
-		return {
-			prices: this.books.map(book => {
+		// return {
+		// 	prices: this.books.map(book => {
+		// 		const price = (book.sellingPrice || 0).toLocaleString('ja-JP',
+		// 			{
+		// 				style: 'currency',
+		// 				currency: 'JPY'
+		// 			}
+		// 		)
+		// 		return price;
+		// 	})
+		// }
+	},
+	computed:{
+		booksModified: function(){
+			let modified = this.books;
+			modified.forEach(book => {
 				const price = (book.sellingPrice || 0).toLocaleString('ja-JP',
 					{
 						style: 'currency',
 						currency: 'JPY'
 					}
 				)
-				return price;
+				book.sellingPrice = price;
 			})
+			return modified;
 		}
+		
 	},
 	components: {
 		'cv-book-card-dialog': bookCardDialog
 	},
 	template: `
-	<div style="margin:auto;">
-	<v-table
-    fixed-header
-    height="300px"
-  >
-    <thead>
-      <tr>
-        <th v-for="heading in ['', 'title', 'price', 'stock']" class="text-left">
-					{{heading}}
-        </th>				
-      </tr>
-    </thead>
-    <tbody>
+		<div style="margin:auto;">
+			<v-table
+				fixed-header
+				height="auto"
+			>
+				<thead height="56px">
+					<tr>
+						<th v-for="heading in ['', 'title', 'price', 'stock']" class="text-left">
+							{{heading}}
+						</th>				
+					</tr>
+				</thead>
+				<tbody>
+					
+					<tr
+						v-for="book in booksModified"
+						:key="book.isbn"
+					>
+						<td><cv-book-card-dialog :book="book"></cv-book-card-dialog></td>
+						<td>{{ book.title }}</td>
+						<td>{{ book.sellingPrice }}</td>
+						<td>{{ book.stock }}</td>
+					</tr>
+				</tbody>
+			</v-table>
 		
-      <tr
-        v-for="(book,index) in books"
-        :key="book.isbn"
-      >
-				<td><cv-book-card-dialog :book="book"></cv-book-card-dialog></td>
-        <td>{{ book.title }}</td>
-				<td>{{ prices[index] }}</td>
-				<td>{{ book.stock }}</td>
-			</tr>
-    </tbody>
-  </v-table>
-	
-	</div>
+		</div>
 	`
 }
 
@@ -490,6 +506,46 @@ const cardsShowCaseComponent = {
 	data() {
 		return {
 			showCase: "cv-book-card",
+			sortMethods: ['販売冊数上位', '残り在庫数降順', '残り在庫数昇順', '販売額降順', '販売額昇順'],
+			sortSelected: "販売冊数上位",
+			books4use: this.books
+		}
+	},
+	computed: {
+		booksSorted: function () {
+			let sortKey, direction;
+
+			switch (this.sortSelected) {
+				case "販売冊数上位":
+					sortKey = "sold";
+					direction = "desc"
+					break;
+				case "残り在庫数降順":
+					sortKey = "stock";
+					direction = "desc"
+					break;
+				case "残り在庫数昇順":
+					sortKey = "stock";
+					direction = "asc"
+					break;
+				case "販売額降順":
+					sortKey = "sellingPrice";
+					direction = "desc"
+					break;
+				case "販売額昇順":
+					sortKey = "sellingPrice";
+					direction = "asc"
+					break;
+			}
+
+			let sorted = this.books;
+
+			sorted.sort((a, b) => b[sortKey] - a[sortKey]);
+			if (direction === "asc") {
+				sorted.reverse();
+			}
+
+			return sorted;
 		}
 	},
 	components: {
@@ -498,17 +554,18 @@ const cardsShowCaseComponent = {
 	},
 	emits: ['like', 'cart'],
 	template: `
-		<v-container style="margin:auto">
-			<v-row>
-				<v-col>
+		<v-container class="py-0">
+			<v-row class="py-0">
+				<v-col  class="pb-0">
 					<v-select
-						:items="['残り在庫数降順', '残り在庫数昇順', '教科書名昇順']"
+						:items="sortMethods"
+						v-model = "sortSelected"
 						label="並び替え"
-						density="comfortable"
+						density="compact"
 						append-inner-icon="mdi-sort"
 					></v-select>
 				</v-col>
-				<v-col>
+				<v-col  class="pb-0">
 					<v-btn
 						icon="mdi-table"
 						variant="text"
@@ -525,12 +582,12 @@ const cardsShowCaseComponent = {
 					></v-btn>
 				</v-col>
 			</v-row>
-			<v-row>
+			<v-row class="py-0">
 				<transition
 					name="component-fade"
 					mode="out-in"
 				>
-				 <component :is="showCase" :books="books"></component>
+				 <component v-show="books.length > 0" :is="showCase" v-model:books="booksSorted"></component>
 				</transition>
 			</v-row>
 		</v-container>
@@ -538,19 +595,38 @@ const cardsShowCaseComponent = {
 }
 
 const reserveFormComponent = {
+	mounted() {
+		this.$refs.form.resetValidation();
+	},
 	data() {
 		return {
 			valid: true,
-			name: "",
-			faculty: null,
-			otherF: null,
-			grade: null,
-			otherG: null,
-			date: null,
-			email: "",
+			info: {
+				name: getCookie("name") || "",
+				faculty: getCookie("faculty") || null,
+				otherF: getCookie("otherF") || null,
+				grade: getCookie("grade") || null,
+				otherG: getCookie("otherG") || null,
+				date: getCookie("date") || null,
+				email: getCookie("email") || "",
+			},
 			cookie: true,
 
-			rule: [v => !!v || 'required']
+			rule: [v => !!v || 'required'],
+			ruleOF: [v => {
+				if (this.faculty === "その他") {
+					return !!v || 'required';
+				} else {
+					return true;
+				}
+			}],
+			ruleOG: [v => {
+				if (this.grade === "その他") {
+					return !!v || 'required';
+				} else {
+					return true;
+				}
+			}]
 		}
 	},
 	props: {
@@ -559,11 +635,46 @@ const reserveFormComponent = {
 		dates: Array
 	},
 	methods: {
-		async validate() {
-			const { valid } = await this.$refs.form.validate()
+		async submit() {
+			const onFulfilled = (e) => {
+				// console.log("fulfilled")
+				if (e.valid) {
+					// console.log("valid");
 
-			if (valid) alert('Form is valid')
-		}
+					// console.log(info);
+
+					const options = { secure: true, 'max-age': 14 * 24 * 3600 };
+					if (this.cookie) {
+						for (let key in this.info) {
+							setCookie(key, this.info[key], options);
+						}
+					} else {
+						["name", "faculty", "grade", "date", "email"].forEach(elm => {
+							deleteCookie(elm);
+						})
+					}
+
+					const postInfo = {
+						name: this.info.name,
+						faculty: this.info.faculty === "その他" ? this.info.otherF : this.info.faculty,
+						grade: this.info.grade === "その他" ? this.info.otherG : this.info.grade,
+						date: this.info.date,
+						email: this.info.email
+					}
+
+					postRsvInfo(postInfo);
+				} else {
+					// console.log("invalid");
+				}
+			}
+			const onRejected = () => {
+				console.log("rejected");
+			}
+
+			validation = this.$refs.form.validate();
+			// console.log(validation);
+			validation.then(onFulfilled, onRejected);
+		},
 	},
 	template: `
 		<v-container style="margin:auto;">
@@ -573,75 +684,76 @@ const reserveFormComponent = {
 				lazy-validation
 			>
 				<v-text-field
-					v-model="name"
+					id="iName"
+					v-model="info.name"
 					:rules="rule"
 					label="お名前"
 					density="compact"
 					variant="underlined"
-					required
 				></v-text-field>
 
 				<v-select
-					v-model="faculty"
+					id="iFac"
+					v-model="info.faculty"
 					:items="faculties"
 					:rules="rule"
 					label="所属"
 					density="compact"
 					variant="underlined"
-					required
 				></v-select>
 				<v-text-field
-					v-show="faculty == 'その他'"
-					v-model="otherF"
-					:rules="rule"
+					id="iOF"
+					v-show="info.faculty == 'その他'"
+					v-model="info.otherF"
+					:rules="ruleOF"
 					label="所属をご入力ください"
 					density="compact"
 					style="padding-left:16px"
-					required
 				></v-text-field>
 				
 				<v-select
-					v-model="grade"
+					id="iGr"
+					v-model="info.grade"
 					:items="grades"
 					:rules="rule"
 					label="学年"
 					density="compact"
 					variant="underlined"
-					required
 				></v-select>
 				<v-text-field
-					v-show="grade == 'その他'"
-					v-model="otherG"
-					:rules="rule"
+					id="iOG"
+					v-show="info.grade == 'その他'"
+					v-model="info.otherG"
+					:rules="ruleOG"
 					label="学年をご入力ください"
 					density="compact"
 					style="padding-left:16px"
-					required
 				></v-text-field>
 
 				<v-select
-					v-model="date"
+					id="iDate"
+					v-model="info.date"
 					:items="dates"
 					:rules="rule"
 					label="お受取日"
 					density="compact"
 					variant="underlined"
-					required
 				></v-select>
 
 				<v-text-field
-					v-model="email"
+					id="iEm"
+					v-model="info.email"
 					:rules="[
-						v => !!v || 'E-mail is required',
+						v => !!v || 'required',
 						v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
 					]"
 					label="メールアドレス"
 					density="compact"
 					variant="underlined"
-					required
 				></v-text-field>
 
 				<v-checkbox
+					id="iCoo"
 					v-model="cookie"
 					label="Cookieを利用して入力情報をブラウザに保存する（2週間で削除されます）"
 					density="compact"
@@ -650,7 +762,7 @@ const reserveFormComponent = {
 				<v-btn
 					color="success"
 					class="mr-4"
-					@click="validate"
+					@click="submit"
 				>入力内容を確認して予約する</v-btn>
 
 			</v-form>

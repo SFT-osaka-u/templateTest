@@ -5,8 +5,9 @@ const cartPage = {
 			settings: store.state.settings,
 			books: store.state.books,
 			wholeCart: store.state.wholeCart,
-			booksInCart: store.filterByCart(store.state.books),
-			booksLiked: store.filterByLike(store.state.books),
+			likes: store.state.likes,
+			booksInCart: store.state.booksInCart,
+			booksLiked: store.state.booksLiked,
 			formSelects: data.form
 		}
 	},
@@ -23,6 +24,8 @@ const cartPage = {
 		<div>
 			<cv-header v-bind="settings"></cv-header>
 			<v-main>
+			<v-row>
+				<v-col cols="12" md="4">
 				<cv-heading
 					badge="true"
 					:content="wholeCart"
@@ -32,23 +35,29 @@ const cartPage = {
 					heading="カート"
 				></cv-heading>
 				<cv-cards-show-case :books="booksInCart"></cv-cards-show-case>
-				
+				</v-col>
+
+				<v-col cols="12" md="4">
 				<cv-heading
 					badge="true"
-					:content="booksLiked.length"
+					:content="likes"
 					color="red"
 					textColor="white"
 					icon="mdi-heart"
 					heading="気になる"
 				></cv-heading>
-				<cv-cards-show-case :books="booksLiked"></cv-cards-show-case>
-				
+				<cv-cards-show-case v-model:books="booksLiked"></cv-cards-show-case>
+				</v-col>
+
+				<v-col cols="12" md="4">
 				<cv-heading
 					icon="mdi-book-open-variant"
 					heading="予約フォーム"
 				></cv-heading>
 				<cv-reserve-form v-bind="formSelects"></cv-reserve-form>
 				<cv-search-btn></cv-search-btn>
+				</v-col>
+			</v-row>
 			</v-main>
 		</div>
 	`,
