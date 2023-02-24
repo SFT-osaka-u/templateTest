@@ -210,7 +210,7 @@ const cartBtnComponent = {
 					style="color:white;"
 				></v-btn>
 			</v-badge>
-			</router-link>
+		</router-link>
 		</div>
 	`
 }
@@ -614,9 +614,10 @@ const reserveFormComponent = {
 			ruleOF: [v => this.info.faculty !== "その他" || !!v || 'required'],
 			ruleOG: [v => this.info.grade !== "その他" || !!v || 'required'],
 
-			dialog: false,
+			confirm: false,
 			loading: false,
-			submitted: false
+			submitted: false,
+			noBooksInCart: false
 		}
 	},
 	props: {
@@ -631,7 +632,7 @@ const reserveFormComponent = {
 			const onFulfilled = (e) => {
 				// console.log("fulfilled")
 				if (e.valid) {
-					this.dialog = true;
+					this.confirm = true;
 				}
 			}
 			const onRejected = () => {
@@ -654,35 +655,40 @@ const reserveFormComponent = {
 			validation.then(onFulfilled, onRejected);
 		},
 		async submit() {
-			const rsvInfo = {
-				name: this.info.name,
-				faculty: this.info.faculty === "その他" ? this.info.otherF : this.info.faculty,
-				grade: this.info.grade === "その他" ? this.info.otherG : this.info.grade,
-				date: this.info.date,
-				email: this.info.email
-			}
-
-			this.loading = true;
-			await new Promise((resolve, reject) => {
-				setTimeout(() => {
-					this.loading = false;
-					// await postInfo(rsvInfo, "rsv");
-					resolve();
-				}, 3000);
-			})
-
-
-			const booksRemove = this.booksInCart;
-			for (let i = booksRemove.length - 1; i >= 0; i--) {
-				for (let j = booksRemove[i].cart - 1; j >= 0; j--) {
-					store.changeCart(booksRemove[i].isbn, "remove")
+			if (this.booksInCart.length > 0) {
+				const rsvInfo = {
+					name: this.info.name,
+					faculty: this.info.faculty === "その他" ? this.info.otherF : this.info.faculty,
+					grade: this.info.grade === "その他" ? this.info.otherG : this.info.grade,
+					date: this.info.date,
+					email: this.info.email
 				}
+
+				this.loading = true;
+				await new Promise((resolve, reject) => {
+					setTimeout(() => {
+						this.loading = false;
+						// await postInfo(rsvInfo, "rsv");
+						resolve();
+					}, 3000);
+				})
+
+
+				const booksRemove = this.booksInCart;
+				for (let i = booksRemove.length - 1; i >= 0; i--) {
+					for (let j = booksRemove[i].cart - 1; j >= 0; j--) {
+						store.changeCart(booksRemove[i].isbn, "remove")
+					}
+				}
+
+				this.confirm = false;
+
+				this.submitted = true;
+			} else {
+				this.confirm = false;
+				this.noBooksInCart = true;
 			}
 
-			this.dialog = false;
-
-			this.submitted = true;
-			
 		}
 	},
 	components: {
@@ -782,7 +788,7 @@ const reserveFormComponent = {
 					入力内容を確認して予約する
 
 					<v-dialog
-						v-model="dialog"
+						v-model="confirm"
 						width="auto"
 						scrollable
 					>
@@ -791,7 +797,6 @@ const reserveFormComponent = {
 						<v-card-text>以下の内容をご確認の上、最下部の「申し込み」ボタンを押下してください。</v-card-text>
 						
 						<cv-book-table :books="booksInCart" :card="false" num="cart"></cv-book-table>
-						<v-divider></v-divider>
 						<v-card-text style="text-align: end;">合計金額 {{ sum }}</v-card-text>
 						
 						<v-table density="compact" style="margin: auto;"><tbody>
@@ -809,13 +814,8 @@ const reserveFormComponent = {
 						</v-card-text>
 
 						<v-card-actions class="d-flex justify-center align-baseline" style="gap: 3rem">
-							<v-btn color="primary" variant="outlined" @click="dialog = false">キャンセル</v-btn>
-							<v-btn color="success" variant="outlined" v-bind="props" :loading="loading" :disabled="loading" @click="submit">申し込み
-							
-								
-
-
-							</v-btn>
+							<v-btn color="primary" variant="outlined" @click="confirm = false">キャンセル</v-btn>
+							<v-btn color="success" variant="outlined" v-bind="props" :loading="loading" :disabled="loading" @click="submit">申し込み</v-btn>
 						</v-card-actions>
 					</v-dialog>
 					
@@ -834,6 +834,27 @@ const reserveFormComponent = {
 								<v-btn
 									variant="text"
 									@click="submitted = false"
+								>Close</v-btn>
+							</div>
+							</v-alert>
+							
+						</v-card>
+						
+					</v-dialog>
+					<v-dialog
+						v-model="noBooksInCart"
+						width="auto"
+					>
+						<v-card>
+							<v-alert
+								type="warning"
+								title="カートに商品が入っていません"
+							>
+							<br>
+							<div style="text-align: end;">
+								<v-btn
+									variant="text"
+									@click="noBooksInCart = false"
 								>Close</v-btn>
 							</div>
 							</v-alert>

@@ -15,7 +15,7 @@ const store = {
 		booksInCart: [],
 		booksLiked: [],
 		wholeCart: [0], // なぜか配列にいれないとcartBtnComponentでreactiveに取り出せない
-		sum: "",
+		sum: "￥0",
 		likes: [0]
 	}),
 	changeLike(isbn) {

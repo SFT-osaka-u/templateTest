@@ -38,7 +38,7 @@ const cartPage = {
 					icon="mdi-cart"
 					heading="カート"
 				></cv-heading>
-				<h4>現在の合計金額：{{ sum }}</h4>
+				<h4 style="padding-left: 24px">カート内の教科書の合計金額：{{ sum }}</h4>
 				<cv-cards-show-case :books="booksInCart"></cv-cards-show-case>
 				</v-col>
 
@@ -60,9 +60,9 @@ const cartPage = {
 					heading="予約フォーム"
 				></cv-heading>
 				<cv-reserve-form v-bind="formSelects" :booksInCart="booksInCart" :sum="sum" ></cv-reserve-form>
-				<cv-search-btn></cv-search-btn>
 				</v-col>
 			</v-row>
+			<cv-search-btn></cv-search-btn>
 			</v-main>
 		</div>
 	`,
