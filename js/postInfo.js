@@ -14,6 +14,7 @@ function postInfo(info, type) {
 
     if(type === ""){ url = ""}
 
+    // Promiseにしたい
     // fetch(url,
     //     {
     //         "method": "POST",

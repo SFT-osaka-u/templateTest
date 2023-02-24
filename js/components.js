@@ -438,13 +438,13 @@ const bookTableComponent = {
 		card: {
 			type: Boolean,
 			default: true
-		  },
+		},
 		num: {
 			type: String,
 			default: "stock"
-		  },
+		},
 	},
-	data() {},
+	data() { },
 	computed: {
 		booksModified: function () {
 			let modified = this.books;
@@ -614,7 +614,9 @@ const reserveFormComponent = {
 			ruleOF: [v => this.info.faculty !== "その他" || !!v || 'required'],
 			ruleOG: [v => this.info.grade !== "その他" || !!v || 'required'],
 
-			dialog: false
+			dialog: false,
+			loading: false,
+			submitted: false
 		}
 	},
 	props: {
@@ -625,27 +627,11 @@ const reserveFormComponent = {
 		sum: String
 	},
 	methods: {
-		async submit() {
+		async validCheck() {
 			const onFulfilled = (e) => {
 				// console.log("fulfilled")
 				if (e.valid) {
 					this.dialog = true;
-					// console.log("valid");
-
-					console.log(this.info);
-
-					const rsvInfo = {
-						name: this.info.name,
-						faculty: this.info.faculty === "その他" ? this.info.otherF : this.info.faculty,
-						grade: this.info.grade === "その他" ? this.info.otherG : this.info.grade,
-						date: this.info.date,
-						email: this.info.email
-					}
-
-					postInfo(rsvInfo, "rsv");
-				} else {
-					// console.log("invalid");
-					// this.dialog = false;
 				}
 			}
 			const onRejected = () => {
@@ -667,6 +653,37 @@ const reserveFormComponent = {
 			console.log(validation);
 			validation.then(onFulfilled, onRejected);
 		},
+		async submit() {
+			const rsvInfo = {
+				name: this.info.name,
+				faculty: this.info.faculty === "その他" ? this.info.otherF : this.info.faculty,
+				grade: this.info.grade === "その他" ? this.info.otherG : this.info.grade,
+				date: this.info.date,
+				email: this.info.email
+			}
+
+			this.loading = true;
+			await new Promise((resolve, reject) => {
+				setTimeout(() => {
+					this.loading = false;
+					// await postInfo(rsvInfo, "rsv");
+					resolve();
+				}, 3000);
+			})
+
+
+			const booksRemove = this.booksInCart;
+			for (let i = booksRemove.length - 1; i >= 0; i--) {
+				for (let j = booksRemove[i].cart - 1; j >= 0; j--) {
+					store.changeCart(booksRemove[i].isbn, "remove")
+				}
+			}
+
+			this.dialog = false;
+
+			this.submitted = true;
+			
+		}
 	},
 	components: {
 		// 'cv-book-card': bookCardsComponent,
@@ -674,6 +691,7 @@ const reserveFormComponent = {
 	},
 	template: `
 		<v-container style="margin:auto;">
+			
 			<v-form
 				ref="form"
 				v-model="valid"
@@ -759,7 +777,7 @@ const reserveFormComponent = {
 					<v-btn
 					color="success"
 					class="mr-4"
-					@click="submit"
+					@click="validCheck"
 					>
 					入力内容を確認して予約する
 
@@ -774,18 +792,59 @@ const reserveFormComponent = {
 						
 						<cv-book-table :books="booksInCart" :card="false" num="cart"></cv-book-table>
 						<v-divider></v-divider>
-						<tr><td>合計金額</td><td>{{ sum }}</td></tr>
-
-						<v-card-actions>
-							<v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
-						</v-card-actions>
-						<v-card-text>
+						<v-card-text style="text-align: end;">合計金額 {{ sum }}</v-card-text>
+						
+						<v-table density="compact" style="margin: auto;"><tbody>
+							<tr><td class="text-center">お名前</td><td>{{ info.name }}</td></tr>
+							<tr><td class="text-center">所属</td><td>{{ info.faculty === "その他" ? info.otherF : info.faculty }}</td></tr>
+							<tr><td class="text-center">学年</td><td>{{ info.grade === "その他" ? info.otherG : info.grade }}</td></tr>
+							<tr><td class="text-center">お受取日</td><td>{{ info.date }}</td></tr>
+							<tr><td class="text-center">メールアドレス</td><td>{{ info.email }}</td></tr>
+						</tbody></v-table>
+						
+						<v-card-text style="font-size: 12px">
+						＊販売状況によって、表示されている在庫数と実際の在庫数が異なる場合がございます。在庫数が不足する場合、ご予約いただけません。<br>
+						＊在庫数の確認後、ご入力いただいたメールアドレス宛てに予約完了のご連絡を送信いたします。<br>
+						＊刷などによって金額が表示と異なる場合がございます。予めご了承ください。
 						</v-card-text>
+
+						<v-card-actions class="d-flex justify-center align-baseline" style="gap: 3rem">
+							<v-btn color="primary" variant="outlined" @click="dialog = false">キャンセル</v-btn>
+							<v-btn color="success" variant="outlined" v-bind="props" :loading="loading" :disabled="loading" @click="submit">申し込み
+							
+								
+
+
+							</v-btn>
+						</v-card-actions>
+					</v-dialog>
+					
+					<v-dialog
+						v-model="submitted"
+						width="auto"
+					>
+						<v-card>
+							<v-alert
+								type="success"
+								title="申し込み完了"
+								text="お申込みありがとうございます。在庫状況を確認の上、折り返しご連絡いたします。"
+							>
+							<br>
+							<div style="text-align: end;">
+								<v-btn
+									variant="text"
+									@click="submitted = false"
+								>Close</v-btn>
+							</div>
+							</v-alert>
+							
+						</v-card>
 						
 					</v-dialog>
 					</v-btn>
-				</div>
 
+				</div>
+				
 			</v-form>
 		</v-container>
 	`
