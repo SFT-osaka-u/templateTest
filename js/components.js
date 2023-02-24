@@ -434,23 +434,19 @@ const bookCardDialog = {
 
 const bookTableComponent = {
 	props: {
-		books: Array
+		books: Array,
+		card: {
+			type: Boolean,
+			default: true
+		  },
+		num: {
+			type: String,
+			default: "stock"
+		  },
 	},
-	data() {
-		// return {
-		// 	prices: this.books.map(book => {
-		// 		const price = (book.sellingPrice || 0).toLocaleString('ja-JP',
-		// 			{
-		// 				style: 'currency',
-		// 				currency: 'JPY'
-		// 			}
-		// 		)
-		// 		return price;
-		// 	})
-		// }
-	},
-	computed:{
-		booksModified: function(){
+	data() {},
+	computed: {
+		booksModified: function () {
 			let modified = this.books;
 			modified.forEach(book => {
 				const price = (book.sellingPrice || 0).toLocaleString('ja-JP',
@@ -463,7 +459,7 @@ const bookTableComponent = {
 			})
 			return modified;
 		}
-		
+
 	},
 	components: {
 		'cv-book-card-dialog': bookCardDialog
@@ -476,9 +472,11 @@ const bookTableComponent = {
 			>
 				<thead height="56px">
 					<tr>
-						<th v-for="heading in ['', 'title', 'price', 'stock']" class="text-left">
+						<th v-if="card"></th>
+						<th v-for="heading in ['title', 'price']" class="text-left">
 							{{heading}}
-						</th>				
+						</th>
+						<th>{{ num }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -487,10 +485,10 @@ const bookTableComponent = {
 						v-for="book in booksModified"
 						:key="book.isbn"
 					>
-						<td><cv-book-card-dialog :book="book"></cv-book-card-dialog></td>
+						<td v-if="card"><cv-book-card-dialog :book="book"></cv-book-card-dialog></td>
 						<td>{{ book.title }}</td>
 						<td>{{ book.sellingPrice }}</td>
-						<td>{{ book.stock }}</td>
+						<td>{{ book[num] }}</td>
 					</tr>
 				</tbody>
 			</v-table>
@@ -506,8 +504,8 @@ const cardsShowCaseComponent = {
 	data() {
 		return {
 			showCase: "cv-book-card",
-			sortMethods: ['販売冊数上位', '残り在庫数降順', '残り在庫数昇順', '販売額降順', '販売額昇順'],
-			sortSelected: "販売冊数上位",
+			sortMethods: ['人気の教科書', '残り在庫数降順', '残り在庫数昇順', '販売額降順', '販売額昇順'],
+			sortSelected: "人気の教科書",
 			books4use: this.books
 		}
 	},
@@ -516,7 +514,7 @@ const cardsShowCaseComponent = {
 			let sortKey, direction;
 
 			switch (this.sortSelected) {
-				case "販売冊数上位":
+				case "人気の教科書":
 					sortKey = "sold";
 					direction = "desc"
 					break;
@@ -613,48 +611,30 @@ const reserveFormComponent = {
 			cookie: true,
 
 			rule: [v => !!v || 'required'],
-			ruleOF: [v => {
-				if (this.faculty === "その他") {
-					return !!v || 'required';
-				} else {
-					return true;
-				}
-			}],
-			ruleOG: [v => {
-				if (this.grade === "その他") {
-					return !!v || 'required';
-				} else {
-					return true;
-				}
-			}]
+			ruleOF: [v => this.info.faculty !== "その他" || !!v || 'required'],
+			ruleOG: [v => this.info.grade !== "その他" || !!v || 'required'],
+
+			dialog: false
 		}
 	},
 	props: {
 		faculties: Array,
 		grades: Array,
-		dates: Array
+		dates: Array,
+		booksInCart: Array,
+		sum: String
 	},
 	methods: {
 		async submit() {
 			const onFulfilled = (e) => {
 				// console.log("fulfilled")
 				if (e.valid) {
+					this.dialog = true;
 					// console.log("valid");
 
-					// console.log(info);
+					console.log(this.info);
 
-					const options = { secure: true, 'max-age': 14 * 24 * 3600 };
-					if (this.cookie) {
-						for (let key in this.info) {
-							setCookie(key, this.info[key], options);
-						}
-					} else {
-						["name", "faculty", "grade", "date", "email"].forEach(elm => {
-							deleteCookie(elm);
-						})
-					}
-
-					const postInfo = {
+					const rsvInfo = {
 						name: this.info.name,
 						faculty: this.info.faculty === "その他" ? this.info.otherF : this.info.faculty,
 						grade: this.info.grade === "その他" ? this.info.otherG : this.info.grade,
@@ -662,19 +642,35 @@ const reserveFormComponent = {
 						email: this.info.email
 					}
 
-					postRsvInfo(postInfo);
+					postInfo(rsvInfo, "rsv");
 				} else {
 					// console.log("invalid");
+					// this.dialog = false;
 				}
 			}
 			const onRejected = () => {
 				console.log("rejected");
 			}
 
+			const options = { secure: true, 'max-age': 14 * 24 * 3600 };
+			if (this.cookie) {
+				for (let key in this.info) {
+					setCookie(key, this.info[key], options);
+				}
+			} else {
+				["name", "faculty", "grade", "date", "email"].forEach(elm => {
+					deleteCookie(elm);
+				})
+			}
+
 			validation = this.$refs.form.validate();
-			// console.log(validation);
+			console.log(validation);
 			validation.then(onFulfilled, onRejected);
 		},
+	},
+	components: {
+		// 'cv-book-card': bookCardsComponent,
+		'cv-book-table': bookTableComponent,
 	},
 	template: `
 		<v-container style="margin:auto;">
@@ -759,11 +755,36 @@ const reserveFormComponent = {
 					density="compact"
 				></v-checkbox>
 
-				<v-btn
+				<div class="text-center">
+					<v-btn
 					color="success"
 					class="mr-4"
 					@click="submit"
-				>入力内容を確認して予約する</v-btn>
+					>
+					入力内容を確認して予約する
+
+					<v-dialog
+						v-model="dialog"
+						width="auto"
+						scrollable
+					>
+						<v-card>
+						<v-card-title>お申込み内容の確認</v-card-title>
+						<v-card-text>以下の内容をご確認の上、最下部の「申し込み」ボタンを押下してください。</v-card-text>
+						
+						<cv-book-table :books="booksInCart" :card="false" num="cart"></cv-book-table>
+						<v-divider></v-divider>
+						<tr><td>合計金額</td><td>{{ sum }}</td></tr>
+
+						<v-card-actions>
+							<v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
+						</v-card-actions>
+						<v-card-text>
+						</v-card-text>
+						
+					</v-dialog>
+					</v-btn>
+				</div>
 
 			</v-form>
 		</v-container>

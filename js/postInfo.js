@@ -1,8 +1,8 @@
 
 
 
-function postRsvInfo(info) {
-    console.log("post:",info);
+function postInfo(info, type) {
+    console.log("post:", type, info);
     // const info = {
     //     name: this.name,
     //     faculty: this.faculty === "その他" ? this.otherF : this.faculty,
@@ -10,15 +10,18 @@ function postRsvInfo(info) {
     //     date: this.date,
     //     email: this.email
     // }
+    let url;
 
-    fetch(url,
-        {
-            "method": "POST",
-            "mode": "no-cors",
-            "Content-Type": "application/x-www-form-urlencoded",
-            "body": JSON.stringify(info)
-        }
-    );
+    if(type === ""){ url = ""}
+
+    // fetch(url,
+    //     {
+    //         "method": "POST",
+    //         "mode": "no-cors",
+    //         "Content-Type": "application/x-www-form-urlencoded",
+    //         "body": JSON.stringify(info)
+    //     }
+    // );
     
 }
 

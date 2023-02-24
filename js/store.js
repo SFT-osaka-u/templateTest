@@ -15,6 +15,7 @@ const store = {
 		booksInCart: [],
 		booksLiked: [],
 		wholeCart: [0], // なぜか配列にいれないとcartBtnComponentでreactiveに取り出せない
+		sum: "",
 		likes: [0]
 	}),
 	changeLike(isbn) {
@@ -27,34 +28,49 @@ const store = {
 		this.filterByLike();
 		this.state.likes[0] = this.state.booksLiked.length;
 	},
-	changeCart(isbn, calc) {
+	async changeCart(isbn, calc) {
 		// console.log(this.state.wholeCart)
 		this.state.books.forEach(book => {
 			if (book.isbn == isbn) {
 				if (calc === 'add') {
 					book.cart++;
-					this.state.wholeCart[0] ++;
+					this.state.wholeCart[0]++;
 				} else if (calc === 'remove') {
 					if (book.cart > 0) {
 						book.cart--;
-						this.state.wholeCart[0] --;
-				} else {
+						this.state.wholeCart[0]--;
+					} else {
 						book.cart = 0;
 					}
 				}
 			}
 		})
-		this.filterByCart();
+		await this.filterByCart();
+
+		let s = 0;
+		let inCart = this.state.booksInCart;
+		inCart.forEach(book => {
+			s += book.sellingPrice * book.cart;
+		})
+
+		this.state.sum = s.toLocaleString('ja-JP',
+			{
+				style: 'currency',
+				currency: 'JPY'
+			}
+		)
+
+
 		// console.log(this.state.wholeCart)
 	},
 	filterByLike() {
 		// return books.filter(book => book.like);
 		// this.state.booksLiked = [];
-		for(let i = 0; i < this.state.likes; i++){
+		for (let i = 0; i < this.state.likes; i++) {
 			this.state.booksLiked.pop();
 		}
 		this.state.books.forEach(book => {
-			if(book.like){
+			if (book.like) {
 				this.state.booksLiked.push(book);
 			}
 		})
@@ -67,7 +83,7 @@ const store = {
 		// }
 		this.state.booksInCart.splice(0, this.state.booksInCart.length);
 		this.state.books.forEach(book => {
-			if(book.cart > 0){
+			if (book.cart > 0) {
 				this.state.booksInCart.push(book);
 			}
 		})
@@ -118,11 +134,11 @@ const store = {
 		// 検索結果を返す
 		return booksByGenre;
 	},
-	
-	saveInfo2Cookie(){
+
+	saveInfo2Cookie() {
 		let booksActive = [];
 		this.state.books.forEach(book => {
-			if(book.cart > 0 || book.like){
+			if (book.cart > 0 || book.like) {
 				booksActive.push(book);
 			}
 		})

@@ -8,8 +8,12 @@ const cartPage = {
 			likes: store.state.likes,
 			booksInCart: store.state.booksInCart,
 			booksLiked: store.state.booksLiked,
-			formSelects: data.form
+			formSelects: data.form,
+			
 		}
+	},
+	computed:{
+		sum: () => { return store.state.sum}
 	},
 	components: {
 		'cv-header': headerComponent,
@@ -34,6 +38,7 @@ const cartPage = {
 					icon="mdi-cart"
 					heading="カート"
 				></cv-heading>
+				<h4>現在の合計金額：{{ sum }}</h4>
 				<cv-cards-show-case :books="booksInCart"></cv-cards-show-case>
 				</v-col>
 
@@ -54,7 +59,7 @@ const cartPage = {
 					icon="mdi-book-open-variant"
 					heading="予約フォーム"
 				></cv-heading>
-				<cv-reserve-form v-bind="formSelects"></cv-reserve-form>
+				<cv-reserve-form v-bind="formSelects" :booksInCart="booksInCart" :sum="sum" ></cv-reserve-form>
 				<cv-search-btn></cv-search-btn>
 				</v-col>
 			</v-row>
