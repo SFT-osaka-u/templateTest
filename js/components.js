@@ -39,10 +39,13 @@ const snsComponent = {
 			})
 		}
 	},
+	props:{
+		color: String
+	},
 	template: `
-		<v-menu>
+		<v-menu v-once>
 			<template v-slot:activator="{ props }">
-				<v-btn icon="mdi-menu-down" v-bind="props"></v-btn>
+				<v-btn icon="mdi-menu-down" v-bind="props" :color="color"></v-btn>
 			</template>
 			<v-list>
 				<router-link to="/about" style="text-decoration: none; color:black;">
@@ -136,14 +139,25 @@ const searchComponent = {
 const headerComponent = {
 	data() {
 		return {
-			drawer: false
+			drawer: false,
+			mainTextColor: ""
 		}
+	},
+	mounted(){
+				let rgbHexArr = [this.mainColor.slice(1, 3), this.mainColor.slice(3, 5), this.mainColor.slice(5, 7)].map( (elm) => {
+					return Number("0x" + elm);
+				});
+				// let minHex = Math.min(...rgbArr.map(elm => {return Number("0x" + elm)}));
+				let luminance = 0x1E * rgbHexArr[0] + 0x3B * rgbHexArr[1] + 0x0B * rgbHexArr[2];
+				
+				if(luminance < 0x3600){ this.mainTextColor = "white"} else { this.mainTextColor = "black"}
 	},
 	props: {
 		title: String,
 		date: String,
 		place: String,
-		fontFamily: String
+		fontFamily: String,
+		mainColor: String
 	},
 	components: {
 		'cv-sns': snsComponent,
@@ -163,15 +177,15 @@ const headerComponent = {
 		}
 	},
 	template: `
-		<v-app-bar density="comfortable" height="72" color="light-green">
-			<template v-slot:prepend>
-			<v-btn icon="mdi-card-search" @click.stop="pageCheck"></v-btn>
+		<v-app-bar density="comfortable" height="72" :color="mainColor">
+			<template v-slot:prepend> 
+			<v-btn icon="mdi-card-search" @click.stop="pageCheck" :color="mainTextColor"></v-btn>
 			</template>
-			<v-app-bar-title style="text-align: center; margin:auto; font-weight: 500;" :style="fontFamily">{{ title }}<br>
+			<v-app-bar-title style="text-align: center; margin:auto; font-weight: 500;" :style="fontFamily" :class="'text-' + mainTextColor">{{ title }}<br>
 				<p style="font-size: small;text-align: center;">{{ date }} | {{ place }}</p>
 			</v-app-bar-title>
 			<template v-slot:append>
-				<cv-sns></cv-sns>
+				<cv-sns :color="mainTextColor"></cv-sns>
       		</template>
 		</v-app-bar>
 		<v-navigation-drawer
@@ -195,7 +209,7 @@ const cartBtnComponent = {
 		<div 
 			style="position:fixed; z-index:1; bottom:24px; right:24px;"
 		>
-		<router-link to="/cart">
+		<router-link to="/cart" style="text-decoration: none;">
 			<v-badge
 				:content="cart>0 ? cart:''"
 				:color="cart>0 ? 'cyan' : 'transparent'"
@@ -278,11 +292,12 @@ const bookCard = {
 		}
 	},
 	template: `
-		
 			<v-card
 				:color="like ? '#FFCDD2' : ''"
 				:elevation="cart > 3 ? 11 :(cart>0 ? cart*3+2:2)"
 			>
+			<v-responsive :aspect-ratio="9 / 16">
+
 				<v-img
 				:src="imgSrc"
 				height="200px"
@@ -334,7 +349,8 @@ const bookCard = {
 					{{ title }}
 					
 				</v-card-text>
-				<v-card-subtitle>{{ price }}</v-card-subtitle>
+				<v-card-subtitle v-once>{{ price }}</v-card-subtitle>
+				</v-responsive>
 				
 
 				<v-card-actions>
@@ -352,6 +368,7 @@ const bookCard = {
 					text-color="white"
 				></v-badge>
 				</v-card-actions>
+
 
 				<v-expand-transition>
 					<div v-show="showDetail">
@@ -379,9 +396,9 @@ const bookCardsComponent = {
 	},
 	template:
 		`
-		<v-container fluid  class="pt-0">
+		<v-container fluid class="pt-0">
 			<v-row dense>
-				<v-col v-for="(book, index) in books" align-self="stretch">
+				<v-col v-for="(book, index) in books" align-self="stretch"  cols="6" sm="3" md="2">
 					<transition-group name="flip-list" tag="div">
 						<cv-card v-bind="book" :key="book.isbn">
 						</cv-card>

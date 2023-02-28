@@ -8,7 +8,9 @@ const store = {
 			title: "",
 			date: "",
 			place: "",
-			fontFamily: ""
+			fontFamily: "",
+			mainColor: "",
+			subColor: "",
 		},
 
 		books: [],

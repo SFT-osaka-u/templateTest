@@ -4,7 +4,9 @@ const data = {
         "date": "4/6(水)～4/15(金) ※土日除く",
         "place": "@万福寺さん前",
         "fontStyle": "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap' rel='stylesheet'>",
-        "fontFamily": "font-family: 'Zen Maru Gothic', sans-serif;"
+        "fontFamily": "font-family: 'Zen Maru Gothic', sans-serif;",
+        "mainColor": "#00A0E9",
+        "subColor": "#EB6100"
     },
     "form": {
         "faculties": ["文学部", "法学部", "経済学部", "外国語学部", "人間科学部", "基礎工学部", "工学部", "医学部", "歯学部", "薬学部", "その他"],
