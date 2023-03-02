@@ -4,6 +4,7 @@ const landingPage = {
     template: `
     <div
         style="background: #F7F6EB;"
+        v-once
     >
         <v-parallax
             src="img/classRoom.jpg"
@@ -135,7 +136,7 @@ const landingPage = {
             "
         >
         子どもたちが平等に教育を受けられることで、将来の選択肢が広がる世界へ。<br>
-        <b>私たちと一緒に世界を変えていきませんか。</b>
+        <b>教科書の寄付・購入を通じて気軽に国際貢献してみませんか?</b>
         </p>
 
         <br>

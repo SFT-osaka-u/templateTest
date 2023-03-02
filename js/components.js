@@ -39,7 +39,7 @@ const snsComponent = {
 			})
 		}
 	},
-	props:{
+	props: {
 		color: String
 	},
 	template: `
@@ -75,7 +75,7 @@ const snsComponent = {
         			<v-list-item-title v-text="item.text"></v-list-item-title>
       			</v-list-item>
 			</v-list>
-    </v-menu>
+    	</v-menu>
 	`
 }
 
@@ -143,14 +143,14 @@ const headerComponent = {
 			mainTextColor: ""
 		}
 	},
-	mounted(){
-				let rgbHexArr = [this.mainColor.slice(1, 3), this.mainColor.slice(3, 5), this.mainColor.slice(5, 7)].map( (elm) => {
-					return Number("0x" + elm);
-				});
-				// let minHex = Math.min(...rgbArr.map(elm => {return Number("0x" + elm)}));
-				let luminance = 0x1E * rgbHexArr[0] + 0x3B * rgbHexArr[1] + 0x0B * rgbHexArr[2];
-				
-				if(luminance < 0x3600){ this.mainTextColor = "white"} else { this.mainTextColor = "black"}
+	mounted() {
+		let rgbHexArr = [this.mainColor.slice(1, 3), this.mainColor.slice(3, 5), this.mainColor.slice(5, 7)].map((elm) => {
+			return Number("0x" + elm);
+		});
+		// let minHex = Math.min(...rgbArr.map(elm => {return Number("0x" + elm)}));
+		let luminance = 0x1E * rgbHexArr[0] + 0x3B * rgbHexArr[1] + 0x0B * rgbHexArr[2];
+
+		if (luminance < 0x3600) { this.mainTextColor = "white" } else { this.mainTextColor = "black" }
 	},
 	props: {
 		title: String,
@@ -182,7 +182,7 @@ const headerComponent = {
 			<v-btn icon="mdi-card-search" @click.stop="pageCheck" :color="mainTextColor"></v-btn>
 			</template>
 			<v-app-bar-title style="text-align: center; margin:auto; font-weight: 500;" :style="fontFamily" :class="'text-' + mainTextColor">{{ title }}<br>
-				<p style="font-size: small;text-align: center;">{{ date }} | {{ place }}</p>
+				<p style="font-size: small; text-align: center;">{{ date }} | {{ place }}</p>
 			</v-app-bar-title>
 			<template v-slot:append>
 				<cv-sns :color="mainTextColor"></cv-sns>
@@ -302,6 +302,7 @@ const bookCard = {
 				:src="imgSrc"
 				height="200px"
 				cover
+				v-once
 				>
 					<div class="d-flex justify-end">
 						<transition
@@ -344,12 +345,12 @@ const bookCard = {
 				</v-img>
 
 				
-				<v-card-text class="text-h6 font-weight-medium">
-				
+				<v-card-text class="text-h6 font-weight-medium" v-once>
 					{{ title }}
-					
 				</v-card-text>
-				<v-card-subtitle v-once>{{ price }}</v-card-subtitle>
+				<v-card-subtitle v-once>
+					{{ price }}
+				</v-card-subtitle>
 				</v-responsive>
 				
 
@@ -371,10 +372,10 @@ const bookCard = {
 
 
 				<v-expand-transition>
-					<div v-show="showDetail">
+					<div v-if="showDetail">
 						<v-divider></v-divider>
 
-						<v-card-text>
+						<v-card-text v-once>
 						ISBN:{{ isbn }}<br>
 						著者:{{ author }}<br>
 						出版社:{{ publisher }}<br>
@@ -389,16 +390,25 @@ const bookCard = {
 
 const bookCardsComponent = {
 	props: {
-		books: Array,
+		books: Array
 	},
 	components: {
 		'cv-card': bookCard
+	},
+	computed: {
+		rpsCol: function () {
+			return {
+				default: 6,
+				sm: 3,
+				md: this.$route.path == "/cart" ? 6 :2
+			};
+		},
 	},
 	template:
 		`
 		<v-container fluid class="pt-0">
 			<v-row dense>
-				<v-col v-for="(book, index) in books" align-self="stretch"  cols="6" sm="3" md="2">
+				<v-col v-for="(book, index) in books" :key="book.isbn" align-self="stretch" :cols="rpsCol.default" :sm="rpsCol.sm" :md="rpsCol.md">
 					<transition-group name="flip-list" tag="div">
 						<cv-card v-bind="book" :key="book.isbn">
 						</cv-card>
@@ -490,7 +500,7 @@ const bookTableComponent = {
 				<thead height="56px">
 					<tr>
 						<th v-if="card"></th>
-						<th v-for="heading in ['title', 'price']" class="text-left">
+						<th v-for="heading in ['title', 'price']" :key="heading" class="text-left">
 							{{heading}}
 						</th>
 						<th>{{ num }}</th>
@@ -602,7 +612,7 @@ const cardsShowCaseComponent = {
 					name="component-fade"
 					mode="out-in"
 				>
-				 <component v-show="books.length > 0" :is="showCase" v-model:books="booksSorted"></component>
+				 <component v-if="books.length > 0" :is="showCase" v-model:books="booksSorted"></component>
 				</transition>
 			</v-row>
 		</v-container>
@@ -740,7 +750,7 @@ const reserveFormComponent = {
 				></v-select>
 				<v-text-field
 					id="iOF"
-					v-show="info.faculty == 'その他'"
+					v-if="info.faculty == 'その他'"
 					v-model="info.otherF"
 					:rules="ruleOF"
 					label="所属をご入力ください"
@@ -759,7 +769,7 @@ const reserveFormComponent = {
 				></v-select>
 				<v-text-field
 					id="iOG"
-					v-show="info.grade == 'その他'"
+					v-if="info.grade == 'その他'"
 					v-model="info.otherG"
 					:rules="ruleOG"
 					label="学年をご入力ください"
@@ -896,7 +906,7 @@ const articlesComponent = {
 		'cv-heading': headingComponent
 	},
 	template: `
-		<template v-for="(article, i) in articles">
+		<template v-for="(article, i) in articles" v-once>
 			<cv-heading
 				:icon="article.icon || 'mdi-information'"
 				:heading="article.heading"

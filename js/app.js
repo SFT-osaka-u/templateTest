@@ -34,6 +34,7 @@ const app = Vue.createApp({
 			}
 		})
 		document.head.insertAdjacentHTML('beforeend', data.settings.fontStyle);
+		document.title = data.settings.title;
 
 		bookData.forEach(book => {
 			this.books.push({ ...book, like: false, cart: 0 });

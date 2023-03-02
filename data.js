@@ -1,7 +1,7 @@
 const data = {
     "settings": {
-        "title": "2022春販売 販売・予約サイト",
-        "date": "4/6(水)～4/15(金) ※土日除く",
+        "title": "2023春販売 販売・予約サイト",
+        "date": "4/5(水)～4/14(金) ※土日除く",
         "place": "@万福寺さん前",
         "fontStyle": "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap' rel='stylesheet'>",
         "fontFamily": "font-family: 'Zen Maru Gothic', sans-serif;",
