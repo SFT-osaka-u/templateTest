@@ -19,7 +19,6 @@ const cartPage = {
 		'cv-header': headerComponent,
 		'cv-heading': headingComponent,
 		'cv-sns': snsComponent,
-		'cv-cart-btn': cartBtnComponent,
 		'cv-cards-show-case': cardsShowCaseComponent,
 		'cv-search-btn': searchBtnComponent,
 		'cv-reserve-form': reserveFormComponent,

@@ -144,7 +144,7 @@ const marquee = {
 		};
 
 	},
-	props:{
+	props: {
 		texts: {
 			type: Array,
 			default: ["this is a marquee1", "this is a marquee 22222222222222222222222222"]
@@ -154,12 +154,12 @@ const marquee = {
 			default: 5
 		}
 	},
-	mounted(){
-			for(let t of this.texts){
-				this.showText += t + "　　　　　";
-			}
-			let len = this.showText.length.toString();
-			this.marqueeStyle = `animation: marquee ${len/this.speed}s linear infinite;`;
+	mounted() {
+		for (let t of this.texts) {
+			this.showText += t + "　　　　　";
+		}
+		let len = this.showText.length.toString();
+		this.marqueeStyle = `animation: marquee ${len / this.speed}s linear infinite;`;
 
 	},
 	template: `
@@ -247,12 +247,27 @@ const headerComponent = {
 const cartBtnComponent = {
 	data() {
 		return {
-			cart: store.state.wholeCart
+			cart: store.state.wholeCart,
+			px: {
+				bottom: "24px",
+				right: "24px"
+			}
+		}
+	},
+	props: {
+		position: {
+			type: Number,
+			default: -1
+		}
+	},
+	mounted() {
+		if (this.position == -2) {
+			this.px.bottom = "108px";
 		}
 	},
 	template: `
 		<div 
-			style="position:fixed; z-index:1; bottom:24px; right:24px;"
+			:style="'position:fixed; z-index:1; bottom:' + px.bottom + '; right:' + px.right + ';'"
 		>
 		<router-link to="/cart" style="text-decoration: none;">
 			<v-badge

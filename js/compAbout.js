@@ -8,14 +8,15 @@ const aboutPage = {
     components:{
         'cv-header': headerComponent,
         'cv-articles': articlesComponent,
+		'cv-cart-btn': cartBtnComponent,
+		'cv-search-btn': searchBtnComponent
     },
     template: `
     <cv-header v-bind="settings"></cv-header>
     <v-main>
-        <router-link to="/cart">go to cart</router-link><br>
-        <router-link to="/search">go to search</router-link>
         <cv-articles :articles="articles"></cv-articles>
-        <p>aaa</p>
+        <cv-cart-btn position="-2"></cv-cart-btn>
+        <cv-search-btn></cv-search-btn>
     </v-main>
     `
 }
