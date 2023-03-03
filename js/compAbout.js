@@ -7,7 +7,7 @@ const aboutPage = {
     },
     components:{
         'cv-header': headerComponent,
-        'cv-articles': articlesComponent
+        'cv-articles': articlesComponent,
     },
     template: `
     <cv-header v-bind="settings"></cv-header>
@@ -15,6 +15,7 @@ const aboutPage = {
         <router-link to="/cart">go to cart</router-link><br>
         <router-link to="/search">go to search</router-link>
         <cv-articles :articles="articles"></cv-articles>
+        <p>aaa</p>
     </v-main>
     `
 }

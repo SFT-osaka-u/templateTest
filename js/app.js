@@ -15,6 +15,8 @@ const router = VueRouter.createRouter({
 	routes,
 })
 
+// const v3marquee = Vue3marquee;
+
 
 
 const app = Vue.createApp({
@@ -53,13 +55,10 @@ const app = Vue.createApp({
 				}
 			})
 		}
-	},
-	components:{
-		'cv-search': searchPage,
 	}
-
 })
 app
 .use(router)
 .use(vuetify)
+// .use(Vue3Marquee)
 .mount('#app')

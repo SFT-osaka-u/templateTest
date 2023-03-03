@@ -3,6 +3,7 @@ const data = {
         "title": "2023春販売 販売・予約サイト",
         "date": "4/5(水)～4/14(金) ※土日除く",
         "place": "@万福寺さん前",
+        "marquees": ["4/5(水)～4/7(金)は10:30-14:30, 4/10(月)～4/14(金)は16:30-19:00にお待ちしております!", "4/5(水)は販売イベントと履修相談会を同時開催します🙌"],
         "fontStyle": "<link rel='preconnect' href='https://fonts.googleapis.com'><link rel='preconnect' href='https://fonts.gstatic.com' crossorigin><link href='https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap' rel='stylesheet'>",
         "fontFamily": "font-family: 'Zen Maru Gothic', sans-serif;",
         "mainColor": "#00A0E9",

@@ -8,6 +8,7 @@ const store = {
 			title: "",
 			date: "",
 			place: "",
+			marquees:"",
 			fontFamily: "",
 			mainColor: "",
 			subColor: "",

@@ -22,12 +22,13 @@ const cartPage = {
 		'cv-cart-btn': cartBtnComponent,
 		'cv-cards-show-case': cardsShowCaseComponent,
 		'cv-search-btn': searchBtnComponent,
-		'cv-reserve-form': reserveFormComponent
+		'cv-reserve-form': reserveFormComponent,
 	},
 	template: `
 		<div>
 			<cv-header v-bind="settings"></cv-header>
 			<v-main>
+
 			<v-row>
 				<v-col cols="12" md="4">
 				<cv-heading

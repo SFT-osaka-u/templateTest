@@ -136,6 +136,42 @@ const searchComponent = {
 	`
 }
 
+const marquee = {
+	data() {
+		return {
+			showText: "",
+			marqueeStyle: ""
+		};
+
+	},
+	props:{
+		texts: {
+			type: Array,
+			default: ["this is a marquee1", "this is a marquee 22222222222222222222222222"]
+		},
+		speed: {
+			type: Number,
+			default: 5
+		}
+	},
+	mounted(){
+			for(let t of this.texts){
+				this.showText += t + "　　　　　";
+			}
+			let len = this.showText.length.toString();
+			this.marqueeStyle = `animation: marquee ${len/this.speed}s linear infinite;`;
+
+	},
+	template: `
+		<div class="marquee">
+			<div :style="marqueeStyle">{{ showText }}</div>
+			<div :style="marqueeStyle" aria-hidden="true">{{ showText }}</div>
+			<div :style="marqueeStyle" aria-hidden="true">{{ showText }}</div>
+			<div :style="marqueeStyle" aria-hidden="true">{{ showText }}</div>
+		</div>
+	`
+}
+
 const headerComponent = {
 	data() {
 		return {
@@ -157,11 +193,13 @@ const headerComponent = {
 		date: String,
 		place: String,
 		fontFamily: String,
-		mainColor: String
+		mainColor: String,
+		marquees: Array
 	},
 	components: {
 		'cv-sns': snsComponent,
-		'cv-search': searchComponent
+		'cv-search': searchComponent,
+		'cv-marquee': marquee
 	},
 	methods: {
 		closeDrawer(resultBooks) {
@@ -177,12 +215,18 @@ const headerComponent = {
 		}
 	},
 	template: `
-		<v-app-bar density="comfortable" height="72" :color="mainColor">
+		<div>
+		<v-app-bar density="comfortable" height="96" :color="mainColor">
 			<template v-slot:prepend> 
 			<v-btn icon="mdi-card-search" @click.stop="pageCheck" :color="mainTextColor"></v-btn>
 			</template>
-			<v-app-bar-title style="text-align: center; margin:auto; font-weight: 500;" :style="fontFamily" :class="'text-' + mainTextColor">{{ title }}<br>
+			<v-app-bar-title style="text-align: center; margin:auto; font-weight: 500;" :style="fontFamily" :class="'text-' + mainTextColor">{{ title }}
 				<p style="font-size: small; text-align: center;">{{ date }} | {{ place }}</p>
+				<cv-marquee
+					:style="'border-top: solid thin ' + mainTextColor + ';'"
+					:texts="marquees"
+				>
+				</cv-marquee>
 			</v-app-bar-title>
 			<template v-slot:append>
 				<cv-sns :color="mainTextColor"></cv-sns>
@@ -195,6 +239,7 @@ const headerComponent = {
 		>
 		<cv-search @search="closeDrawer"></cv-search>
 		</v-navigation-drawer>
+		</div>
 	`
 
 }
@@ -400,7 +445,7 @@ const bookCardsComponent = {
 			return {
 				default: 6,
 				sm: 3,
-				md: this.$route.path == "/cart" ? 6 :2
+				md: this.$route.path == "/cart" ? 6 : 2
 			};
 		},
 	},
