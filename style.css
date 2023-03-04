@@ -1,43 +1,4 @@
-.flip-list-move {
-    transition: transform 0.8s ease;
-}
-
-.flip-list-item {
-    transition: all 0.8s ease;
-    display: inline-block;
-    margin-right: 10px;
-}
-
-.flip-list-enter-from,
-.flip-list-leave-to {
-    opacity: 0;
-    transform: translateY(30px);
-}
-
-.flip-list-leave-active {
-    position: absolute;
-}
-
-.component-fade-enter-active,
-.component-fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.component-fade-enter-from,
-.component-fade-leave-to {
-  opacity: 0;
-}
-
-
-/* .marquee {
-	animation: marquee-anim 10s linear infinite;
-}
-
-@keyframes marquee-anim {
-	0%   { transform: translate(100%, 0); }
-	100% { transform: translate(-10%, 0); }
-} */
-
+/* 文字を流す(marquee)設定 */
 .marquee {
   display: flex;
   white-space: nowrap;
@@ -45,11 +6,62 @@
   gap: 1rem;
   font-size: small;
 }
-/* .marquee-inner {
-  animation: marquee 15s linear infinite;
-} */
- 
+
 @keyframes marquee {
-  0%   { translate: 0; }
-  100% { translate: calc(-100% - 1rem); }
+  0% {
+    translate: 0;
+  }
+
+  100% {
+    translate: calc(-100% - 1rem);
+  }
+}
+
+
+
+/* LPのアニメーション */
+@keyframes slideInRt {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLt {
+  from{
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInTp {
+  from{
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from{
+    opacity: 0;
+  }
+  
+  to {
+    opacity: 1;
+  }
 }

@@ -30,6 +30,9 @@ const landingPage = {
                     font-family: serif, 'Cambria';
                     font-size: clamp(1.5rem, 5vw + 1rem, 4.5rem);
                     margin:4.5% 0 0 8%;
+
+                    opacity: 0;
+                    animation: slideInLt 1.5s 1s forwards;
                 "
             >
                 STUDY FOR TWO
@@ -50,6 +53,9 @@ const landingPage = {
                         font-size: clamp(1rem, 3vw + 1rem, 3rem);
                         writing-mode: vertical-rl;
                         margin: 0 0 0 5.5%;
+
+                        opacity: 0;
+                        animation: slideInTp 1.5s 1s forwards;
                     "
                 >
                     Osaka Univ.
@@ -62,9 +68,12 @@ const landingPage = {
                         text-align:right;
                         padding: 4px 8% 2px 0;
                         margin-top:4%;
-                        border-bottom: #EB6100 solid;
                         align-self: flex-end;
                         flex-grow:1;
+                        border-bottom: #EB6100 solid;
+
+                        opacity: 0;
+                        animation: slideInRt 1.5s 1s forwards;
                     "
                 >
                     勉強したいと願うすべての子どもたちが<br>勉強できる世界に
@@ -75,7 +84,12 @@ const landingPage = {
                 class="
                     d-flex justify-space-around align-center flex-column align-self-stretch
                 "
-                style="flex-grow:1;"
+                style="
+                    flex-grow:1;
+
+                    opacity: 0;
+                    animation: fadeIn 3s 1s forwards;
+                "
             >
                 <v-btn
                     variant="flat"
@@ -114,7 +128,30 @@ const landingPage = {
                     text-align: center;
                 "
             >
-                教育で人生が、<br>世界が、<br>未来が変わる
+                <span
+                    style="
+                        opacity: 0;
+                        animation: fadeIn 3s 3s forwards;
+                    "
+                >
+                    教育で人生が、
+                </span><br>
+                <span
+                    style="
+                        opacity: 0;
+                        animation: fadeIn 3s 4s forwards;
+                    "
+                >
+                    世界が、
+                </span><br>
+                <span
+                    style="
+                        opacity: 0;
+                        animation: fadeIn 3s 5s forwards;
+                    "
+                >
+                    未来が変わる
+                </span>
             </p>
         </div>
 
@@ -172,6 +209,7 @@ const landingPage = {
             <p
                 style="
                     padding: 8rem 0 1rem 0;
+                    text-align: center;
                 "
             >
                 私たちSTUDY FOR TWOの活動は、「回収」「販売」「支援」の3つから成り立っています。
