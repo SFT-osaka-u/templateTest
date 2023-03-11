@@ -758,16 +758,21 @@ const reserveFormComponent = {
 				// 		author1:
 				// 	}
 				// ]
-				let data = {
-					type: "reserve",
-					rsvInfo: rsvInfo,
-					books: this.booksInCart.map(book => {
-						return {
+				let books = [];
+				this.booksInCart.forEach(book => {
+					for (let i = 0; i < book.cart; i++) {
+						books.push({
 							isbn: book.isbn,
 							title: book.title,
 							author1: book.author
-						}
-					})
+						})
+					}
+				})
+
+				let data = {
+					type: "reserve",
+					rsvInfo: rsvInfo,
+					books: books
 				}
 				console.log(rsvInfo);
 
@@ -782,7 +787,7 @@ const reserveFormComponent = {
 				const response = await postInfo(data);
 				console.log(response);
 				this.loading = false;
-				if (response.ok) {
+				if (response.message === "success") {
 					const booksRemove = this.booksInCart;
 					for (let i = booksRemove.length - 1; i >= 0; i--) {
 						for (let j = booksRemove[i].cart - 1; j >= 0; j--) {

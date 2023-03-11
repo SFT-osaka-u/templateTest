@@ -26,22 +26,16 @@ async function postInfo(data) {
     if(data.type === "reserve"){ url = "https://script.google.com/macros/s/AKfycbykLnW45WGwUJgJu_XAONK7t6hR9v2C93jEdeT37xbjHCupB-UMcEypdkzVf4AgGqmO/exec"}
 
     // Promise
-
-    let params = new URLSearchParams();
-    params.append('postData', JSON.stringify(data))
-
     const response = await fetch(url,
         {
             "method": "POST",
-            "mode": "cors",
-            "headers":{
-                'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            "body": params
+            // "mode": "no-cors",
+            // "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
+            "body": JSON.stringify(data)
         }
     )
-    return response;
+    return response.json();
 }
 
 
