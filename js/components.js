@@ -704,6 +704,7 @@ const reserveFormComponent = {
 			confirm: false,
 			loading: false,
 			submitted: false,
+			submitError: false,
 			noBooksInCart: false
 		}
 	},
@@ -748,29 +749,52 @@ const reserveFormComponent = {
 					faculty: this.info.faculty === "その他" ? this.info.otherF : this.info.faculty,
 					grade: this.info.grade === "その他" ? this.info.otherG : this.info.grade,
 					date: this.info.date,
-					email: this.info.email
+					mail: this.info.email,
 				}
+				// books: [
+				// 	{
+				// 		isbn:,
+				// 		title:,
+				// 		author1:
+				// 	}
+				// ]
+				let data = {
+					type: "reserve",
+					rsvInfo: rsvInfo,
+					books: this.booksInCart.map(book => {
+						return {
+							isbn: book.isbn,
+							title: book.title,
+							author1: book.author
+						}
+					})
+				}
+				console.log(rsvInfo);
 
 				this.loading = true;
-				await new Promise((resolve, reject) => {
-					setTimeout(() => {
-						this.loading = false;
-						// await postInfo(rsvInfo, "rsv");
-						resolve();
-					}, 3000);
-				})
-
-
-				const booksRemove = this.booksInCart;
-				for (let i = booksRemove.length - 1; i >= 0; i--) {
-					for (let j = booksRemove[i].cart - 1; j >= 0; j--) {
-						store.changeCart(booksRemove[i].isbn, "remove")
+				// await new Promise((resolve, reject) => {
+				// 	setTimeout(() => {
+				// 		this.loading = false;
+				// 		// await postInfo(rsvInfo, "rsv");
+				// 		resolve();
+				// 	}, 3000);
+				// })
+				const response = await postInfo(data);
+				console.log(response);
+				this.loading = false;
+				if (response.ok) {
+					const booksRemove = this.booksInCart;
+					for (let i = booksRemove.length - 1; i >= 0; i--) {
+						for (let j = booksRemove[i].cart - 1; j >= 0; j--) {
+							store.changeCart(booksRemove[i].isbn, "remove")
+						}
 					}
+					this.submitted = true;
+				} else {
+					this.submitError = true;
 				}
 
 				this.confirm = false;
-
-				this.submitted = true;
 			} else {
 				this.confirm = false;
 				this.noBooksInCart = true;
@@ -921,6 +945,28 @@ const reserveFormComponent = {
 								<v-btn
 									variant="text"
 									@click="submitted = false"
+								>Close</v-btn>
+							</div>
+							</v-alert>
+							
+						</v-card>
+						
+					</v-dialog>
+					<v-dialog
+						v-model="submitError"
+						width="auto"
+					>
+						<v-card>
+							<v-alert
+								type="error"
+								title="送信エラー"
+								text="送信時にエラーが発生しました。お手数ですが、もう一度お試しください。エラーが解消しない場合はメールやSNSのDMを通じてご連絡ください。"
+							>
+							<br>
+							<div style="text-align: end;">
+								<v-btn
+									variant="text"
+									@click="submitError = false"
 								>Close</v-btn>
 							</div>
 							</v-alert>

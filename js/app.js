@@ -35,6 +35,8 @@ const app = Vue.createApp({
 				this.settings[key] = data.settings[key]
 			}
 		})
+
+		// フォントの設定ないときの分岐要るかも
 		document.head.insertAdjacentHTML('beforeend', data.settings.fontStyle);
 		document.title = data.settings.title;
 
