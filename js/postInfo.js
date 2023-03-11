@@ -27,10 +27,9 @@ async function postInfo(data) {
 
     // Promise
 
-    const params = new URLSearchParams();
+    let params = new URLSearchParams();
     params.append('postData', JSON.stringify(data))
 
-    data.body = params;
     const response = await fetch(url,
         {
             "method": "POST",
