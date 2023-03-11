@@ -3,19 +3,6 @@
 
 async function postInfo(data) {
     const repoName = location.pathname; // "/"除く
-    // const data = {
-    //     type:type,
-    //     repoName:repoName,
-    //     rsvInfo:{
-    //         name: this.name,
-    //         faculty: this.faculty === "その他" ? this.otherF : this.faculty,
-    //         grade: this.grade === "その他" ? this.otherG : this.grade,
-    //         date: this.date,
-    //         email: this.email
-    //     },
-    //     books:[]
-    // }
-
     data = {
         ...data,
         repoName: repoName
