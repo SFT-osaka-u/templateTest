@@ -192,6 +192,8 @@ const landingPage = {
             >
                 <a
                     href="https://studyfortwo.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style="
                         font-family: serif;
                         font-size: clamp(1rem, 0.5vw + 0.5rem, 8rem);

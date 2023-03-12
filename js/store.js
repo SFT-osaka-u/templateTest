@@ -12,6 +12,7 @@ const store = {
 			fontFamily: "",
 			mainColor: "",
 			subColor: "",
+			genres: ""
 		},
 
 		books: [],
@@ -22,7 +23,6 @@ const store = {
 		likes: [0]
 	}),
 	changeLike(isbn) {
-		// console.log('call like', isbn);
 		this.state.books.forEach(book => {
 			if (book.isbn == isbn) {
 				book.like = !book.like;
@@ -64,11 +64,8 @@ const store = {
 		)
 
 
-		// console.log(this.state.wholeCart)
 	},
 	filterByLike() {
-		// return books.filter(book => book.like);
-		// this.state.booksLiked = [];
 		for (let i = 0; i < this.state.likes; i++) {
 			this.state.booksLiked.pop();
 		}
@@ -80,10 +77,6 @@ const store = {
 		this.saveInfo2Cookie();
 	},
 	filterByCart() {
-		// return books.filter(book => { return book.cart > 0 });
-		// for(let i = 0; i < this.state.booksInCart.length; i++){
-		// 	this.state.booksInCart.pop();
-		// }
 		this.state.booksInCart.splice(0, this.state.booksInCart.length);
 		this.state.books.forEach(book => {
 			if (book.cart > 0) {

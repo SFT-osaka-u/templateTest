@@ -16,7 +16,7 @@ function setCookie(name, value, options) {
     }
     document.cookie = updatedCookie;
 }
-// 使用例:
+// e.g.
 // setCookie('user', 'John', { secure: true, 'max-age': 3600 });
 
 function deleteCookie(name) {

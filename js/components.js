@@ -1,5 +1,3 @@
-
-
 const headingComponent = {
 	props: {
 		badge: Boolean,
@@ -82,8 +80,6 @@ const snsComponent = {
 const searchComponent = {
 	data() {
 		return {
-			// drawer: false,
-			genres: ['法', '政治・経済', '文系その他', '英語', '第二言語', '数学', '理科', '情報・統計', '理系その他', '教職・資格'],
 			keyWord: "",
 			selected: {
 				method: "教科書名",
@@ -91,11 +87,13 @@ const searchComponent = {
 			}
 		}
 	},
+	props:{
+		genres:Array
+	},
 	methods: {
 		search() {
 			const resultBooks = store.search(this.selected, this.keyWord);
 			this.$emit('search', resultBooks);
-			// console.log(this.keyWord, this.selected, resultBooks);
 		}
 	},
 	template: `
@@ -183,7 +181,6 @@ const headerComponent = {
 		let rgbHexArr = [this.mainColor.slice(1, 3), this.mainColor.slice(3, 5), this.mainColor.slice(5, 7)].map((elm) => {
 			return Number("0x" + elm);
 		});
-		// let minHex = Math.min(...rgbArr.map(elm => {return Number("0x" + elm)}));
 		let luminance = 0x1E * rgbHexArr[0] + 0x3B * rgbHexArr[1] + 0x0B * rgbHexArr[2];
 
 		if (luminance < 0x3600) { this.mainTextColor = "white" } else { this.mainTextColor = "black" }
@@ -194,7 +191,8 @@ const headerComponent = {
 		place: String,
 		fontFamily: String,
 		mainColor: String,
-		marquees: Array
+		marquees: Array,
+		genres: Array
 	},
 	components: {
 		'cv-sns': snsComponent,
@@ -237,7 +235,7 @@ const headerComponent = {
 			location="start"
 			temporary
 		>
-		<cv-search @search="closeDrawer"></cv-search>
+		<cv-search @search="closeDrawer" :genres="genres"></cv-search>
 		</v-navigation-drawer>
 		</div>
 	`
@@ -751,13 +749,7 @@ const reserveFormComponent = {
 					date: this.info.date,
 					mail: this.info.email,
 				}
-				// books: [
-				// 	{
-				// 		isbn:,
-				// 		title:,
-				// 		author1:
-				// 	}
-				// ]
+				
 				let books = [];
 				this.booksInCart.forEach(book => {
 					for (let i = 0; i < book.cart; i++) {
@@ -777,13 +769,7 @@ const reserveFormComponent = {
 				console.log(rsvInfo);
 
 				this.loading = true;
-				// await new Promise((resolve, reject) => {
-				// 	setTimeout(() => {
-				// 		this.loading = false;
-				// 		// await postInfo(rsvInfo, "rsv");
-				// 		resolve();
-				// 	}, 3000);
-				// })
+				
 				const response = await postInfo(data);
 				console.log(response);
 				this.loading = false;
@@ -808,7 +794,6 @@ const reserveFormComponent = {
 		}
 	},
 	components: {
-		// 'cv-book-card': bookCardsComponent,
 		'cv-book-table': bookTableComponent,
 	},
 	template: `

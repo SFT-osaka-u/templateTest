@@ -1,3 +1,4 @@
+// GET requestのデータに置き換え
 const bookData = data.books;
 
 const { createVuetify } = Vuetify;
@@ -14,10 +15,6 @@ const router = VueRouter.createRouter({
 	history: VueRouter.createWebHashHistory(),
 	routes,
 })
-
-// const v3marquee = Vue3marquee;
-
-
 
 const app = Vue.createApp({
 	data() {
@@ -36,7 +33,6 @@ const app = Vue.createApp({
 			}
 		})
 
-		// フォントの設定ないときの分岐要るかも
 		document.head.insertAdjacentHTML('beforeend', data.settings.fontStyle);
 		document.title = data.settings.title;
 
@@ -62,5 +58,4 @@ const app = Vue.createApp({
 app
 .use(router)
 .use(vuetify)
-// .use(Vue3Marquee)
 .mount('#app')

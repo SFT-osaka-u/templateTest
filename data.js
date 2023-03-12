@@ -8,7 +8,6 @@ const data = {
         "fontFamily": "font-family: 'Zen Maru Gothic', sans-serif;",
         "mainColor": "#00A0E9",
         "subColor": "#EB6100",
-        // 分野のpropsとして渡すところまだ書いていない
         "genres":['法', '政治・経済', '文系その他', '英語', '第二言語', '数学', '理科', '情報・統計', '理系その他', '教職・資格']
     },
     "form": {
